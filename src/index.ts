@@ -17,7 +17,11 @@ app.post('/products', async (req, res) => {
 
 // READ products
 app.get('/products', async (req, res) => {
-  const products = await prisma.product.findMany();
+  const products = await prisma.product.findMany({
+    include: {
+      metafields: true,
+    },
+  });
   res.json(products);
 });
 
@@ -26,6 +30,9 @@ app.get('/products/:id', async (req, res) => {
   const { id } = req.params;
   const product = await prisma.product.findUnique({
     where: { id: Number(id) },
+    include: {
+      metafields: true,
+    },
   });
   if (product === null) {
     res.sendStatus(404);
@@ -39,6 +46,9 @@ app.get('/products/handle/:handle', async (req, res) => {
   const { handle } = req.params;
   const product = await prisma.product.findUnique({
     where: { handle },
+    include: {
+      metafields: true,
+    },
   });
   if (product === null) {
     res.sendStatus(404);
@@ -107,6 +117,35 @@ app.delete('/products/handle/:handle', async (req, res) => {
     res.json({
       message: 'DELETE successful',
       product,
+    });
+  } catch (error) {
+    res.json({ error });
+  }
+});
+
+app.post('/products/:productId/metafields', async (req, res) => {
+  const { productId } = req.params;
+  const data = { ...req.body };
+  const product = await prisma.product.update({
+    where: { id: Number(productId) },
+    data: {
+      metafields: {
+        create: data,
+      },
+    },
+  });
+  res.json({ 'metafield created': data, product });
+});
+
+app.delete('/products/metafields/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const productMetafield = await prisma.productMetafield.delete({
+      where: { id: Number(id) },
+    });
+    res.json({
+      message: 'DELETE successful',
+      productMetafield,
     });
   } catch (error) {
     res.json({ error });

@@ -11,16 +11,27 @@ generator client {
 }
 
 model Product {
-  id               Int       @id @default(autoincrement())
-  handle           String    @unique
+  id               Int                @id @default(autoincrement())
+  handle           String             @unique
   productType      String?
   vendor           String?
   tags             String?
-  availableForSale Boolean   @default(true)
+  availableForSale Boolean            @default(true)
   variants         Variant[]
-  createdAt        DateTime  @default(now())
+  createdAt        DateTime           @default(now())
   updatedAt        DateTime?
+  metafields       ProductMetafield[]
   // add metafields, content
+}
+
+model ProductMetafield {
+  id        Int      @id @default(autoincrement())
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId Int?
+  namespace String
+  key       String
+  value     Json?
+  helpText  String?
 }
 
 model Variant {
