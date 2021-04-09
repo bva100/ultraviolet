@@ -6,6 +6,10 @@ const app = express();
 
 app.use(express.json());
 
+// *****************
+// *** PRODUCTS ***
+// *****************
+
 // CREATE a new product
 app.post('/products', async (req, res) => {
   const data = { ...req.body };
@@ -123,6 +127,11 @@ app.delete('/products/handle/:handle', async (req, res) => {
   }
 });
 
+// **************************
+// *** PRODUCT METAFIELDS ***
+// **************************
+
+// CREATE product metafield by productId
 app.post('/products/:productId/metafields', async (req, res) => {
   const { productId } = req.params;
   const data = { ...req.body };
@@ -137,6 +146,7 @@ app.post('/products/:productId/metafields', async (req, res) => {
   res.json({ 'metafield created': data, product });
 });
 
+// Delete product metafield by ID
 app.delete('/products/metafields/:id', async (req, res) => {
   const { id } = req.params;
   try {
