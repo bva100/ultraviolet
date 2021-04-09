@@ -6,6 +6,7 @@ const app = express();
 
 app.use(express.json());
 
+// CREATE a new product
 app.post('/products', async (req, res) => {
   const data = { ...req.body };
   const newProduct = await prisma.product.create({
@@ -14,11 +15,13 @@ app.post('/products', async (req, res) => {
   res.json(newProduct);
 });
 
+// READ products
 app.get('/products', async (req, res) => {
   const products = await prisma.product.findMany();
   res.json(products);
 });
 
+// READ a single product by ID
 app.get('/products/:id', async (req, res) => {
   const { id } = req.params;
   const product = await prisma.product.findUnique({
@@ -31,6 +34,7 @@ app.get('/products/:id', async (req, res) => {
   }
 });
 
+// READ a single product by Handle
 app.get('/products/handle/:handle', async (req, res) => {
   const { handle } = req.params;
   const product = await prisma.product.findUnique({
@@ -43,9 +47,12 @@ app.get('/products/handle/:handle', async (req, res) => {
   }
 });
 
+// UPDATE a single product by ID
 app.put('/products/:id', async (req, res) => {
   const { id } = req.params;
   const data = { ...req.body };
+  delete data.handle;
+  data.updatedAt = new Date().toISOString();
   try {
     const product = await prisma.product.update({
       where: { id: Number(id) },
@@ -57,6 +64,24 @@ app.put('/products/:id', async (req, res) => {
   }
 });
 
+// UPDATE a single product by Handle
+app.put('/products/handle/:handle', async (req, res) => {
+  const { handle } = req.params;
+  const data = { ...req.body };
+  delete data.handle;
+  data.updatedAt = new Date().toISOString();
+  try {
+    const product = await prisma.product.update({
+      where: { handle },
+      data,
+    });
+    res.json(product);
+  } catch (error) {
+    res.json({ error });
+  }
+});
+
+// DELETE a single product by ID
 app.delete('/products/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -64,7 +89,24 @@ app.delete('/products/:id', async (req, res) => {
       where: { id: Number(id) },
     });
     res.json({
-      message: 'success',
+      message: 'DELETE successful',
+      product,
+    });
+  } catch (error) {
+    res.json({ error });
+  }
+});
+
+// DELETE a single product by Handle
+app.delete('/products/handle/:handle', async (req, res) => {
+  const { handle } = req.params;
+  try {
+    const product = await prisma.product.delete({
+      where: { handle },
+    });
+    res.json({
+      message: 'DELETE successful',
+      product,
     });
   } catch (error) {
     res.json({ error });
