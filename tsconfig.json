@@ -1,9 +1,18 @@
 {
+  "exclude": [
+    "node_modules",
+    "./node_modules",
+    "./node_modules/*",
+    "./node_modules/@types/node/index.d.ts",
+  ],
   "compilerOptions": {
     "sourceMap": true,
     "outDir": "dist",
     "strict": true,
     "lib": ["esnext"],
     "esModuleInterop": true
-  }
+  },
+  "include": [
+    "src/*"
+  ]
 }
