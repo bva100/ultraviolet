@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Product {
+  id               Int       @id @default(autoincrement())
+  handle           String    @unique
+  productType      String?
+  vendor           String?
+  tags             String?
+  availableForSale Boolean   @default(true)
+  variants         Variant[]
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime?
+  // add metafields, content
+}
+
+model Variant {
+  id                Int       @id @default(autoincrement())
+  Product           Product?  @relation(fields: [productId], references: [id])
+  productId         Int?
+  availableForSale  Boolean   @default(true)
+  price             Decimal
+  priceCurrency     String
+  compareAtPrice    Decimal?
+  quantityAvailable Int
+  sku               String?
+  weight            Decimal?
+  weightUnit        String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime?
+  // metafields, content
+}
