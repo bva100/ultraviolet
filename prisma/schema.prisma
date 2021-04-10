@@ -42,7 +42,7 @@ model Variant {
   price             Decimal
   priceCurrency     String
   compareAtPrice    Decimal?
-  quantityAvailable Int
+  quantityAvailable Int?
   sku               String?
   weight            Decimal?
   weightUnit        String?

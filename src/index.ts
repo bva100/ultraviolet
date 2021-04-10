@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import express from 'express';
+import express, { application } from 'express';
 
 const prisma = new PrismaClient();
 const app = express();
@@ -23,6 +23,7 @@ app.post('/products', async (req, res) => {
 app.get('/products', async (req, res) => {
   const products = await prisma.product.findMany({
     include: {
+      variants: true,
       metafields: true,
     },
   });
@@ -35,6 +36,7 @@ app.get('/products/:id', async (req, res) => {
   const product = await prisma.product.findUnique({
     where: { id: Number(id) },
     include: {
+      variants: true,
       metafields: true,
     },
   });
@@ -51,6 +53,7 @@ app.get('/products/handle/:handle', async (req, res) => {
   const product = await prisma.product.findUnique({
     where: { handle },
     include: {
+      variants: true,
       metafields: true,
     },
   });
@@ -143,7 +146,7 @@ app.post('/products/:productId/metafields', async (req, res) => {
       },
     },
   });
-  res.json({ 'metafield created': data, product });
+  res.json({ 'metafield created ': data, product });
 });
 
 // Delete product metafield by ID
@@ -160,6 +163,57 @@ app.delete('/products/metafields/:id', async (req, res) => {
   } catch (error) {
     res.json({ error });
   }
+});
+
+// *****************
+// *** VARIANTS ****
+// *****************
+
+// Create a new variant
+app.post('/variants', async (req, res) => {
+  const data = { ...req.body };
+  const variant = await prisma.variant.create({
+    data,
+  });
+  res.json(variant);
+});
+
+// READ all variants
+app.get('/variants', async (req, res) => {
+  const variants = await prisma.variant.findMany();
+  res.json(variants);
+});
+
+// READ variant by ID
+app.get('/variants/:id', async (req, res) => {
+  const { id } = req.params;
+  const variant = await prisma.variant.findUnique({
+    where: { id: Number(id) },
+  });
+  res.json(variant);
+});
+
+// UPDATE a single variant by ID
+app.put('/variants/:id', async (req, res) => {
+  const { id } = req.params;
+  const data = { ...req.body };
+  const variant = await prisma.variant.update({
+    where: { id: Number(id) },
+    data,
+  });
+  res.json(variant);
+});
+
+// DELETE a single variant by ID
+app.delete('/variants/:id', async (req, res) => {
+  const { id } = req.params;
+  const variant = await prisma.variant.delete({
+    where: { id: Number(id) },
+  });
+  res.json({
+    message: 'DELETE successful',
+    variant,
+  });
 });
 
 app.listen(3000, () => console.log('REST API server ready at: http://localhost:3000'));
