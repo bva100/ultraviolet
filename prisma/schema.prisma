@@ -25,13 +25,15 @@ model Product {
 }
 
 model ProductMetafield {
-  id        Int      @id @default(autoincrement())
-  Product   Product? @relation(fields: [productId], references: [id])
+  id        Int       @id @default(autoincrement())
+  Product   Product?  @relation(fields: [productId], references: [id])
   productId Int?
   namespace String
   key       String
   value     Json?
   helpText  String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
 }
 
 model Variant {

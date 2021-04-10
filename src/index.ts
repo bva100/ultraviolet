@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import express, { application } from 'express';
+import { visitFunctionBody } from 'typescript';
 
 const prisma = new PrismaClient();
 const app = express();
@@ -134,23 +135,44 @@ app.delete('/products/handle/:handle', async (req, res) => {
 // *** PRODUCT METAFIELDS ***
 // **************************
 
-// CREATE product metafield by productId
-app.post('/products/:productId/metafields', async (req, res) => {
-  const { productId } = req.params;
+// CREATE a single product metafield
+app.post('/product-metafields', async (req, res) => {
   const data = { ...req.body };
-  const product = await prisma.product.update({
-    where: { id: Number(productId) },
-    data: {
-      metafields: {
-        create: data,
-      },
-    },
+  const productMetafield = await prisma.productMetafield.create({
+    data,
   });
-  res.json({ 'metafield created ': data, product });
+  res.json(productMetafield);
+});
+
+// READ product metafield by ID
+app.get('/product-metafields/:id', async (req, res) => {
+  const { id } = req.params;
+  const productMetafield = await prisma.productMetafield.findUnique({
+    where: { id: Number(id) },
+  });
+  res.json(productMetafield);
+});
+
+// READ many product metafields
+app.get('/product-metafields', async (req, res) => {
+  const productMetafield = await prisma.productMetafield.findMany();
+  res.json(productMetafield);
+});
+
+// UPDATE a single product metafield by ID
+app.put('/product-metafields/:id', async (req, res) => {
+  const { id } = req.params;
+  const data = { ...req.body };
+  data.updatedAt = new Date().toISOString();
+  const productMetafield = await prisma.productMetafield.update({
+    where: { id: Number(id) },
+    data,
+  });
+  res.json(productMetafield);
 });
 
 // Delete product metafield by ID
-app.delete('/products/metafields/:id', async (req, res) => {
+app.delete('/products-metafields/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const productMetafield = await prisma.productMetafield.delete({
