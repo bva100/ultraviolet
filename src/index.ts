@@ -134,6 +134,57 @@ app.delete('/products/handle/:handle', async (req, res) => {
 });
 
 // **************************
+// *** PRODUCT CONTENT ******
+// **************************
+
+// CREATE product content
+app.post('/product-content', async (req, res) => {
+  const data = { ...req.body };
+  const productContent = await prisma.productContent.create({
+    data,
+  });
+  res.json(productContent);
+});
+
+// READ many product content
+app.get('/product-content', async (req, res) => {
+  const productContent = await prisma.productContent.findMany();
+  res.json(productContent);
+});
+
+// READ a product content by ID
+app.get('/product-content/:id', async (req, res) => {
+  const { id } = req.params;
+  const productContent = await prisma.productContent.findUnique({
+    where: { id: Number(id) },
+  });
+  res.json(productContent);
+});
+
+// UPDATE a single product content by ID
+app.put('/product-content/:id', async (req, res) => {
+  const { id } = req.params;
+  const data = { ...req.body };
+  const productContent = await prisma.productContent.update({
+    where: { id: Number(id) },
+    data,
+  });
+  res.json(productContent);
+});
+
+// DELETE a single product content by ID
+app.delete('/product-content/:id', async (req, res) => {
+  const { id } = req.params;
+  const productContent = await prisma.productContent.delete({
+    where: { id: Number(id) },
+  });
+  res.json({
+    message: 'DELETE successful',
+    productContent,
+  });
+});
+
+// **************************
 // *** PRODUCT METAFIELDS ***
 // **************************
 
@@ -188,57 +239,6 @@ app.delete('/product-metafields/:id', async (req, res) => {
   }
 });
 
-// **************************
-// *** PRODUCT CONTENT ******
-// **************************
-
-// CREATE product content
-app.post('/product-content', async (req, res) => {
-  const data = { ...req.body };
-  const productContent = await prisma.productContent.create({
-    data,
-  });
-  res.json(productContent);
-});
-
-// READ many product content
-app.get('/product-content', async (req, res) => {
-  const productContent = await prisma.productContent.findMany();
-  res.json(productContent);
-});
-
-// READ a product content by ID
-app.get('/product-content/:id', async (req, res) => {
-  const { id } = req.params;
-  const productContent = await prisma.productContent.findUnique({
-    where: { id: Number(id) },
-  });
-  res.json(productContent);
-});
-
-// UPDATE a single product content by ID
-app.put('/product-content/:id', async (req, res) => {
-  const { id } = req.params;
-  const data = { ...req.body };
-  const productContent = await prisma.productContent.update({
-    where: { id: Number(id) },
-    data,
-  });
-  res.json(productContent);
-});
-
-// DELETE a single product content by ID
-app.delete('/product-content/:id', async (req, res) => {
-  const { id } = req.params;
-  const productContent = await prisma.productContent.delete({
-    where: { id: Number(id) },
-  });
-  res.json({
-    message: 'DELETE successful',
-    productContent,
-  });
-});
-
 // *****************
 // *** VARIANTS ****
 // *****************
@@ -287,6 +287,57 @@ app.delete('/variants/:id', async (req, res) => {
   res.json({
     message: 'DELETE successful',
     variant,
+  });
+});
+
+// **************************
+// *** VARIANT CONTENT ***
+// **************************
+
+// CREATE a single variant content
+app.post('/variant-content', async (req, res) => {
+  const data = { ...req.body };
+  const variantContent = await prisma.variantContent.create({
+    data,
+  });
+  res.json(variantContent);
+});
+
+// READ many variant content
+app.get('/variant-content', async (req, res) => {
+  const variantContent = await prisma.variantContent.findMany();
+  res.json(variantContent);
+});
+
+// READ a single variant content by ID
+app.get('/variant-content/:id', async (req, res) => {
+  const { id } = req.params;
+  const variantContent = await prisma.variantContent.findUnique({
+    where: { id: Number(id) },
+  });
+  res.json(variantContent);
+});
+
+// UPDATE a single variant content by ID
+app.put('/variant-content/:id', async (req, res) => {
+  const { id } = req.params;
+  const data = { ...req.body };
+  const variantContent = await prisma.variantContent.update({
+    where: { id: Number(id) },
+    data,
+  });
+  res.json(variantContent);
+});
+
+// DELETE a single variant content by ID
+app.delete('/variant-content/:id', async (req, res) => {
+  const { id } = req.params;
+  const variantContent = await prisma.variantContent.delete({
+    where: { id: Number(id) },
+  });
+  res.json({
+    message: 'DELETE successful',
+    variantContent,
   });
 });
 
