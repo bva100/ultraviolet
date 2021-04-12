@@ -23,7 +23,10 @@ app.post('/products', async (req, res) => {
 
 // READ products
 app.get('/products', async (req, res) => {
+  const { skip, take } = req.query;
   const products = await prisma.product.findMany({
+    skip: skip ? Number(skip) : 0,
+    take: take ? Number(take) : 25,
     include: {
       content: true,
       variants: true,
@@ -148,7 +151,11 @@ app.post('/product-content', async (req, res) => {
 
 // READ many product content
 app.get('/product-content', async (req, res) => {
-  const productContent = await prisma.productContent.findMany();
+  const { skip, take } = req.query;
+  const productContent = await prisma.productContent.findMany({
+    skip: skip ? Number(skip) : 0,
+    take: take ? Number(take) : 25,
+  });
   res.json(productContent);
 });
 
@@ -197,18 +204,22 @@ app.post('/product-metafields', async (req, res) => {
   res.json(productMetafield);
 });
 
+// READ many product metafields
+app.get('/product-metafields', async (req, res) => {
+  const { skip, take } = req.query;
+  const productMetafields = await prisma.productMetafield.findMany({
+    skip: skip ? Number(skip) : 0,
+    take: take ? Number(take) : 25,
+  });
+  res.json(productMetafields);
+});
+
 // READ product metafield by ID
 app.get('/product-metafields/:id', async (req, res) => {
   const { id } = req.params;
   const productMetafield = await prisma.productMetafield.findUnique({
     where: { id: Number(id) },
   });
-  res.json(productMetafield);
-});
-
-// READ many product metafields
-app.get('/product-metafields', async (req, res) => {
-  const productMetafield = await prisma.productMetafield.findMany();
   res.json(productMetafield);
 });
 
@@ -254,7 +265,10 @@ app.post('/variants', async (req, res) => {
 
 // READ all variants
 app.get('/variants', async (req, res) => {
+  const { skip, take } = req.query;
   const variants = await prisma.variant.findMany({
+    skip: skip ? Number(skip) : 0,
+    take: take ? Number(take) : 25,
     include: {
       content: true,
       metafields: true,
@@ -314,7 +328,11 @@ app.post('/variant-content', async (req, res) => {
 
 // READ many variant content
 app.get('/variant-content', async (req, res) => {
-  const variantContent = await prisma.variantContent.findMany();
+  const { skip, take } = req.query;
+  const variantContent = await prisma.variantContent.findMany({
+    skip: skip ? Number(skip) : 0,
+    take: take ? Number(take) : 25,
+  });
   res.json(variantContent);
 });
 
@@ -365,7 +383,11 @@ app.post('/variant-metafields', async (req, res) => {
 
 // READ variant metafields
 app.get('/variant-metafields', async (req, res) => {
-  const variantMetafields = await prisma.variantMetafield.findMany();
+  const { skip, take } = req.query;
+  const variantMetafields = await prisma.variantMetafield.findMany({
+    skip: skip ? Number(skip) : 0,
+    take: take ? Number(take) : 25,
+  });
   res.json(variantMetafields);
 });
 
