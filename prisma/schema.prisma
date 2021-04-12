@@ -19,35 +19,35 @@ model Product {
   availableForSale Boolean            @default(true)
   variants         Variant[]
   createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
   metafields       ProductMetafield[]
   content          ProductContent[]
 }
 
 model ProductMetafield {
-  id        Int       @id @default(autoincrement())
-  Product   Product?  @relation(fields: [productId], references: [id])
+  id        Int      @id @default(autoincrement())
+  Product   Product? @relation(fields: [productId], references: [id])
   productId Int?
   namespace String
   key       String
   value     Json?
   helpText  String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ProductContent {
-  id            Int       @id @default(autoincrement())
-  Product       Product?  @relation(fields: [productId], references: [id])
+  id            Int      @id @default(autoincrement())
+  Product       Product? @relation(fields: [productId], references: [id])
   productId     Int?
   productHandle String
   locale        String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
   title         String?
   description   String?
   fields        Json?
-  published     Boolean   @default(false)
+  published     Boolean  @default(false)
   // featuredMedia, Media
 }
 
@@ -64,19 +64,19 @@ model Variant {
   weight            Decimal?
   weightUnit        String?
   createdAt         DateTime           @default(now())
-  updatedAt         DateTime?
+  updatedAt         DateTime           @updatedAt
   metafields        VariantMetafield[]
   // metafields, content
 }
 
 model VariantMetafield {
-  id        Int       @id @default(autoincrement())
-  Variant   Variant?  @relation(fields: [variantId], references: [id])
+  id        Int      @id @default(autoincrement())
+  Variant   Variant? @relation(fields: [variantId], references: [id])
   variantId Int?
   namespace String
   key       String
   value     Json?
   helpText  String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

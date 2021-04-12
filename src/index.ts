@@ -71,7 +71,6 @@ app.put('/products/:id', async (req, res) => {
   const { id } = req.params;
   const data = { ...req.body };
   delete data.handle;
-  data.updatedAt = new Date().toISOString();
   try {
     const product = await prisma.product.update({
       where: { id: Number(id) },
@@ -88,7 +87,6 @@ app.put('/products/handle/:handle', async (req, res) => {
   const { handle } = req.params;
   const data = { ...req.body };
   delete data.handle;
-  data.updatedAt = new Date().toISOString();
   try {
     const product = await prisma.product.update({
       where: { handle },
@@ -164,7 +162,6 @@ app.get('/product-metafields', async (req, res) => {
 app.put('/product-metafields/:id', async (req, res) => {
   const { id } = req.params;
   const data = { ...req.body };
-  data.updatedAt = new Date().toISOString();
   const productMetafield = await prisma.productMetafield.update({
     where: { id: Number(id) },
     data,
@@ -278,7 +275,6 @@ app.get('/variant-metafields/:id', async (req, res) => {
 app.put('/variant-metafields/:id', async (req, res) => {
   const { id } = req.params;
   const data = { ...req.body };
-  data.updatedAt = new Date().toISOString();
   const variantMetafield = await prisma.variantMetafield.update({
     where: { id: Number(id) },
     data,
