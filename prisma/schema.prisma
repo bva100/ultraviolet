@@ -21,7 +21,7 @@ model Product {
   createdAt        DateTime           @default(now())
   updatedAt        DateTime?
   metafields       ProductMetafield[]
-  // add content (ont to many)
+  content          ProductContent[]
 }
 
 model ProductMetafield {
@@ -34,6 +34,21 @@ model ProductMetafield {
   helpText  String?
   createdAt DateTime  @default(now())
   updatedAt DateTime?
+}
+
+model ProductContent {
+  id            Int       @id @default(autoincrement())
+  Product       Product?  @relation(fields: [productId], references: [id])
+  productId     Int?
+  productHandle String
+  locale        String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime?
+  title         String?
+  description   String?
+  fields        Json?
+  published     Boolean   @default(false)
+  // featuredMedia, Media
 }
 
 model Variant {

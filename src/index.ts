@@ -188,11 +188,18 @@ app.delete('/product-metafields/:id', async (req, res) => {
   }
 });
 
+// **************************
+// *** PRODUCT CONTENT ******
+// **************************
+
+// CREATE product content
+// app.post()
+
 // *****************
 // *** VARIANTS ****
 // *****************
 
-// Create a new variant
+// CREATE a new variant
 app.post('/variants', async (req, res) => {
   const data = { ...req.body };
   const variant = await prisma.variant.create({
@@ -280,7 +287,6 @@ app.put('/variant-metafields/:id', async (req, res) => {
 });
 
 // DELETE a variant metafield by ID
-// Delete product metafield by ID
 app.delete('/variant-metafields/:id', async (req, res) => {
   const { id } = req.params;
   try {
