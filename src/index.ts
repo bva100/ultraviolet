@@ -25,6 +25,7 @@ app.post('/products', async (req, res) => {
 app.get('/products', async (req, res) => {
   const products = await prisma.product.findMany({
     include: {
+      content: true,
       variants: true,
       metafields: true,
     },
@@ -38,6 +39,7 @@ app.get('/products/:id', async (req, res) => {
   const product = await prisma.product.findUnique({
     where: { id: Number(id) },
     include: {
+      content: true,
       variants: true,
       metafields: true,
     },
@@ -55,6 +57,7 @@ app.get('/products/handle/:handle', async (req, res) => {
   const product = await prisma.product.findUnique({
     where: { handle },
     include: {
+      content: true,
       variants: true,
       metafields: true,
     },
@@ -190,7 +193,51 @@ app.delete('/product-metafields/:id', async (req, res) => {
 // **************************
 
 // CREATE product content
-// app.post()
+app.post('/product-content', async (req, res) => {
+  const data = { ...req.body };
+  const productContent = await prisma.productContent.create({
+    data,
+  });
+  res.json(productContent);
+});
+
+// READ many product content
+app.get('/product-content', async (req, res) => {
+  const productContent = await prisma.productContent.findMany();
+  res.json(productContent);
+});
+
+// READ a product content by ID
+app.get('/product-content/:id', async (req, res) => {
+  const { id } = req.params;
+  const productContent = await prisma.productContent.findUnique({
+    where: { id: Number(id) },
+  });
+  res.json(productContent);
+});
+
+// UPDATE a single product content by ID
+app.put('/product-content/:id', async (req, res) => {
+  const { id } = req.params;
+  const data = { ...req.body };
+  const productContent = await prisma.productContent.update({
+    where: { id: Number(id) },
+    data,
+  });
+  res.json(productContent);
+});
+
+// DELETE a single product content by ID
+app.delete('/product-content/:id', async (req, res) => {
+  const { id } = req.params;
+  const productContent = await prisma.productContent.delete({
+    where: { id: Number(id) },
+  });
+  res.json({
+    message: 'DELETE successful',
+    productContent,
+  });
+});
 
 // *****************
 // *** VARIANTS ****
