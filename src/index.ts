@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import express, { application } from 'express';
+import { allowedNodeEnvironmentFlags } from 'node:process';
 import { visitFunctionBody } from 'typescript';
 
 const prisma = new PrismaClient();
@@ -172,7 +173,7 @@ app.put('/product-metafields/:id', async (req, res) => {
 });
 
 // Delete product metafield by ID
-app.delete('/products-metafields/:id', async (req, res) => {
+app.delete('/product-metafields/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const productMetafield = await prisma.productMetafield.delete({
@@ -236,6 +237,63 @@ app.delete('/variants/:id', async (req, res) => {
     message: 'DELETE successful',
     variant,
   });
+});
+
+// **************************
+// *** VARIANT METAFIELDS ***
+// **************************
+
+// CREATE a single variant metafield
+app.post('/variant-metafields', async (req, res) => {
+  const data = { ...req.body };
+  const variantMetafield = await prisma.variantMetafield.create({
+    data,
+  });
+  res.json(variantMetafield);
+});
+
+// READ variant metafields
+app.get('/variant-metafields', async (req, res) => {
+  const variantMetafields = await prisma.variantMetafield.findMany();
+  res.json(variantMetafields);
+});
+
+//  READ a variant metafield by ID
+app.get('/variant-metafields/:id', async (req, res) => {
+  const { id } = req.params;
+  const variantMetafield = await prisma.variantMetafield.findUnique({
+    where: { id: Number(id) },
+  });
+  res.json(variantMetafield);
+});
+
+// UPDATE a variant metafield by ID
+app.put('/variant-metafields/:id', async (req, res) => {
+  const { id } = req.params;
+  const data = { ...req.body };
+  data.updatedAt = new Date().toISOString();
+  const variantMetafield = await prisma.variantMetafield.update({
+    where: { id: Number(id) },
+    data,
+  });
+  res.json(variantMetafield);
+});
+
+// DELETE a variant metafield by ID
+// Delete product metafield by ID
+app.delete('/variant-metafields/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const variantMetafield = await prisma.variantMetafield.delete({
+      where: { id: Number(id) },
+    });
+    res.json({
+      message: 'DELETE successful',
+      variantMetafield,
+    });
+  } catch (error) {
+    res.json({ error });
+  }
 });
 
 app.listen(3000, () => console.log('REST API server ready at: http://localhost:3000'));
