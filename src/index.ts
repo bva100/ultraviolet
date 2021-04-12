@@ -254,7 +254,12 @@ app.post('/variants', async (req, res) => {
 
 // READ all variants
 app.get('/variants', async (req, res) => {
-  const variants = await prisma.variant.findMany();
+  const variants = await prisma.variant.findMany({
+    include: {
+      content: true,
+      metafields: true,
+    },
+  });
   res.json(variants);
 });
 
@@ -263,6 +268,10 @@ app.get('/variants/:id', async (req, res) => {
   const { id } = req.params;
   const variant = await prisma.variant.findUnique({
     where: { id: Number(id) },
+    include: {
+      content: true,
+      metafields: true,
+    },
   });
   res.json(variant);
 });
