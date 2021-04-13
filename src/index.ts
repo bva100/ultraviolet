@@ -199,43 +199,71 @@ app.post('/product-content', async (req, res) => {
 // READ many product content
 app.get('/product-content', async (req, res) => {
   const { skip, take } = req.query;
-  const productContent = await prisma.productContent.findMany({
-    skip: skip ? Number(skip) : 0,
-    take: take ? Number(take) : 25,
-  });
-  res.json(productContent);
+  try {
+    const productContent = await prisma.productContent.findMany({
+      skip: skip ? Number(skip) : 0,
+      take: take ? Number(take) : 25,
+    });
+    res.json(productContent);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // READ a product content by ID
 app.get('/product-content/:id', async (req, res) => {
   const { id } = req.params;
-  const productContent = await prisma.productContent.findUnique({
-    where: { id: Number(id) },
-  });
-  res.json(productContent);
+  try {
+    const productContent = await prisma.productContent.findUnique({
+      where: { id: Number(id) },
+    });
+    res.json(productContent);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // UPDATE a single product content by ID
 app.put('/product-content/:id', async (req, res) => {
   const { id } = req.params;
   const data = { ...req.body };
-  const productContent = await prisma.productContent.update({
-    where: { id: Number(id) },
-    data,
-  });
-  res.json(productContent);
+  try {
+    const productContent = await prisma.productContent.update({
+      where: { id: Number(id) },
+      data,
+    });
+    res.json(productContent);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // DELETE a single product content by ID
 app.delete('/product-content/:id', async (req, res) => {
   const { id } = req.params;
-  const productContent = await prisma.productContent.delete({
-    where: { id: Number(id) },
-  });
-  res.json({
-    message: 'DELETE successful',
-    productContent,
-  });
+  try {
+    const productContent = await prisma.productContent.delete({
+      where: { id: Number(id) },
+    });
+    res.json({
+      message: 'DELETE successful',
+      productContent,
+    });
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // **************************
