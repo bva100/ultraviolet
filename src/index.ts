@@ -1,7 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import express, { application } from 'express';
-import { allowedNodeEnvironmentFlags } from 'node:process';
-import { visitFunctionBody } from 'typescript';
 
 const prisma = new PrismaClient();
 const app = express();
@@ -13,7 +11,7 @@ app.use(express.json());
 // *****************
 
 // CREATE a new product
-app.post('/products', async (req, res) => {
+app.post('/api/v1/products', async (req, res) => {
   const data = { ...req.body };
   try {
     const newProduct = await prisma.product.create({
@@ -30,7 +28,7 @@ app.post('/products', async (req, res) => {
 });
 
 // READ products
-app.get('/products', async (req, res) => {
+app.get('/api/v1/products', async (req, res) => {
   const { skip, take } = req.query;
   try {
     const products = await prisma.product.findMany({
@@ -53,7 +51,7 @@ app.get('/products', async (req, res) => {
 });
 
 // READ a single product by ID
-app.get('/products/:id', async (req, res) => {
+app.get('/api/v1/products/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const product = await prisma.product.findUnique({
@@ -79,7 +77,7 @@ app.get('/products/:id', async (req, res) => {
 });
 
 // READ a single product by Handle
-app.get('/products/handle/:handle', async (req, res) => {
+app.get('/api/v1/products/handle/:handle', async (req, res) => {
   const { handle } = req.params;
   try {
     const product = await prisma.product.findUnique({
@@ -105,7 +103,7 @@ app.get('/products/handle/:handle', async (req, res) => {
 });
 
 // UPDATE a single product by ID
-app.put('/products/:id', async (req, res) => {
+app.put('/api/v1/products/:id', async (req, res) => {
   const { id } = req.params;
   const data = { ...req.body };
   delete data.handle;
@@ -125,7 +123,7 @@ app.put('/products/:id', async (req, res) => {
 });
 
 // UPDATE a single product by Handle
-app.put('/products/handle/:handle', async (req, res) => {
+app.put('/api/v1/products/handle/:handle', async (req, res) => {
   const { handle } = req.params;
   const data = { ...req.body };
   delete data.handle;
@@ -145,7 +143,7 @@ app.put('/products/handle/:handle', async (req, res) => {
 });
 
 // DELETE a single product by ID
-app.delete('/products/:id', async (req, res) => {
+app.delete('/api/v1/products/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const product = await prisma.product.delete({
@@ -165,7 +163,7 @@ app.delete('/products/:id', async (req, res) => {
 });
 
 // DELETE a single product by Handle
-app.delete('/products/handle/:handle', async (req, res) => {
+app.delete('/api/v1/products/handle/:handle', async (req, res) => {
   const { handle } = req.params;
   try {
     const product = await prisma.product.delete({
@@ -189,7 +187,7 @@ app.delete('/products/handle/:handle', async (req, res) => {
 // **************************
 
 // CREATE product content
-app.post('/product-content', async (req, res) => {
+app.post('/api/v1/product-content', async (req, res) => {
   const data = { ...req.body };
   try {
     const productContent = await prisma.productContent.create({
@@ -206,7 +204,7 @@ app.post('/product-content', async (req, res) => {
 });
 
 // READ many product content
-app.get('/product-content', async (req, res) => {
+app.get('/api/v1/product-content', async (req, res) => {
   const { skip, take, productHandle } = req.query;
   try {
     if (productHandle) {
@@ -233,7 +231,7 @@ app.get('/product-content', async (req, res) => {
 });
 
 // READ a product content by ID
-app.get('/product-content/:id', async (req, res) => {
+app.get('/api/v1/product-content/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const productContent = await prisma.productContent.findUnique({
@@ -254,7 +252,7 @@ app.get('/product-content/:id', async (req, res) => {
 });
 
 // UPDATE a single product content by ID
-app.put('/product-content/:id', async (req, res) => {
+app.put('/api/v1/product-content/:id', async (req, res) => {
   const { id } = req.params;
   const data = { ...req.body };
   try {
@@ -273,7 +271,7 @@ app.put('/product-content/:id', async (req, res) => {
 });
 
 // DELETE a single product content by ID
-app.delete('/product-content/:id', async (req, res) => {
+app.delete('/api/v1/product-content/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const productContent = await prisma.productContent.delete({
@@ -297,7 +295,7 @@ app.delete('/product-content/:id', async (req, res) => {
 // **************************
 
 // CREATE a single product metafield
-app.post('/product-metafields', async (req, res) => {
+app.post('/api/v1/product-metafields', async (req, res) => {
   const data = { ...req.body };
   try {
     const productMetafield = await prisma.productMetafield.create({
@@ -314,7 +312,7 @@ app.post('/product-metafields', async (req, res) => {
 });
 
 // READ many product metafields
-app.get('/product-metafields', async (req, res) => {
+app.get('/api/v1/product-metafields', async (req, res) => {
   const { skip, take } = req.query;
   try {
     const productMetafields = await prisma.productMetafield.findMany({
@@ -332,7 +330,7 @@ app.get('/product-metafields', async (req, res) => {
 });
 
 // READ product metafield by ID
-app.get('/product-metafields/:id', async (req, res) => {
+app.get('/api/v1/product-metafields/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const productMetafield = await prisma.productMetafield.findUnique({
@@ -353,7 +351,7 @@ app.get('/product-metafields/:id', async (req, res) => {
 });
 
 // UPDATE a single product metafield by ID
-app.put('/product-metafields/:id', async (req, res) => {
+app.put('/api/v1/product-metafields/:id', async (req, res) => {
   const { id } = req.params;
   const data = { ...req.body };
   try {
@@ -372,7 +370,7 @@ app.put('/product-metafields/:id', async (req, res) => {
 });
 
 // Delete product metafield by ID
-app.delete('/product-metafields/:id', async (req, res) => {
+app.delete('/api/v1/product-metafields/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const productMetafield = await prisma.productMetafield.delete({
@@ -396,7 +394,7 @@ app.delete('/product-metafields/:id', async (req, res) => {
 // *****************
 
 // CREATE a new variant
-app.post('/variants', async (req, res) => {
+app.post('/api/v1/variants', async (req, res) => {
   const data = { ...req.body };
   try {
     const variant = await prisma.variant.create({
@@ -413,7 +411,7 @@ app.post('/variants', async (req, res) => {
 });
 
 // READ all variants
-app.get('/variants', async (req, res) => {
+app.get('/api/v1/variants', async (req, res) => {
   const { skip, take } = req.query;
   try {
     const variants = await prisma.variant.findMany({
@@ -435,7 +433,7 @@ app.get('/variants', async (req, res) => {
 });
 
 // READ variant by ID
-app.get('/variants/:id', async (req, res) => {
+app.get('/api/v1/variants/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const variant = await prisma.variant.findUnique({
@@ -460,7 +458,7 @@ app.get('/variants/:id', async (req, res) => {
 });
 
 // UPDATE a single variant by ID
-app.put('/variants/:id', async (req, res) => {
+app.put('/api/v1/variants/:id', async (req, res) => {
   const { id } = req.params;
   const data = { ...req.body };
   try {
@@ -479,7 +477,7 @@ app.put('/variants/:id', async (req, res) => {
 });
 
 // DELETE a single variant by ID
-app.delete('/variants/:id', async (req, res) => {
+app.delete('/api/v1/variants/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const variant = await prisma.variant.delete({
@@ -503,7 +501,7 @@ app.delete('/variants/:id', async (req, res) => {
 // **************************
 
 // CREATE a single variant content
-app.post('/variant-content', async (req, res) => {
+app.post('/api/v1/variant-content', async (req, res) => {
   const data = { ...req.body };
   try {
     const variantContent = await prisma.variantContent.create({
@@ -520,7 +518,7 @@ app.post('/variant-content', async (req, res) => {
 });
 
 // READ many variant content
-app.get('/variant-content', async (req, res) => {
+app.get('/api/v1/variant-content', async (req, res) => {
   const { skip, take } = req.query;
   try {
     const variantContent = await prisma.variantContent.findMany({
@@ -538,7 +536,7 @@ app.get('/variant-content', async (req, res) => {
 });
 
 // READ a single variant content by ID
-app.get('/variant-content/:id', async (req, res) => {
+app.get('/api/v1/variant-content/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const variantContent = await prisma.variantContent.findUnique({
@@ -559,7 +557,7 @@ app.get('/variant-content/:id', async (req, res) => {
 });
 
 // UPDATE a single variant content by ID
-app.put('/variant-content/:id', async (req, res) => {
+app.put('/api/v1/variant-content/:id', async (req, res) => {
   const { id } = req.params;
   const data = { ...req.body };
   try {
@@ -578,7 +576,7 @@ app.put('/variant-content/:id', async (req, res) => {
 });
 
 // DELETE a single variant content by ID
-app.delete('/variant-content/:id', async (req, res) => {
+app.delete('/api/v1/variant-content/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const variantContent = await prisma.variantContent.delete({
@@ -602,7 +600,7 @@ app.delete('/variant-content/:id', async (req, res) => {
 // **************************
 
 // CREATE a single variant metafield
-app.post('/variant-metafields', async (req, res) => {
+app.post('/api/v1/variant-metafields', async (req, res) => {
   const data = { ...req.body };
   try {
     const variantMetafield = await prisma.variantMetafield.create({
@@ -619,7 +617,7 @@ app.post('/variant-metafields', async (req, res) => {
 });
 
 // READ variant metafields
-app.get('/variant-metafields', async (req, res) => {
+app.get('/api/v1/variant-metafields', async (req, res) => {
   const { skip, take } = req.query;
   try {
     const variantMetafields = await prisma.variantMetafield.findMany({
@@ -637,7 +635,7 @@ app.get('/variant-metafields', async (req, res) => {
 });
 
 //  READ a variant metafield by ID
-app.get('/variant-metafields/:id', async (req, res) => {
+app.get('/api/v1/variant-metafields/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const variantMetafield = await prisma.variantMetafield.findUnique({
@@ -658,7 +656,7 @@ app.get('/variant-metafields/:id', async (req, res) => {
 });
 
 // UPDATE a variant metafield by ID
-app.put('/variant-metafields/:id', async (req, res) => {
+app.put('/api/v1/variant-metafields/:id', async (req, res) => {
   const { id } = req.params;
   const data = { ...req.body };
   try {
@@ -677,7 +675,7 @@ app.put('/variant-metafields/:id', async (req, res) => {
 });
 
 // DELETE a variant metafield by ID
-app.delete('/variant-metafields/:id', async (req, res) => {
+app.delete('/api/v1/variant-metafields/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const variantMetafield = await prisma.variantMetafield.delete({
