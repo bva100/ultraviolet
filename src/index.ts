@@ -289,31 +289,52 @@ app.post('/product-metafields', async (req, res) => {
 // READ many product metafields
 app.get('/product-metafields', async (req, res) => {
   const { skip, take } = req.query;
-  const productMetafields = await prisma.productMetafield.findMany({
-    skip: skip ? Number(skip) : 0,
-    take: take ? Number(take) : 25,
-  });
-  res.json(productMetafields);
+  try {
+    const productMetafields = await prisma.productMetafield.findMany({
+      skip: skip ? Number(skip) : 0,
+      take: take ? Number(take) : 25,
+    });
+    res.json(productMetafields);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // READ product metafield by ID
 app.get('/product-metafields/:id', async (req, res) => {
   const { id } = req.params;
-  const productMetafield = await prisma.productMetafield.findUnique({
-    where: { id: Number(id) },
-  });
-  res.json(productMetafield);
+  try {
+    const productMetafield = await prisma.productMetafield.findUnique({
+      where: { id: Number(id) },
+    });
+    res.json(productMetafield);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // UPDATE a single product metafield by ID
 app.put('/product-metafields/:id', async (req, res) => {
   const { id } = req.params;
   const data = { ...req.body };
-  const productMetafield = await prisma.productMetafield.update({
-    where: { id: Number(id) },
-    data,
-  });
-  res.json(productMetafield);
+  try {
+    const productMetafield = await prisma.productMetafield.update({
+      where: { id: Number(id) },
+      data,
+    });
+    res.json(productMetafield);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // Delete product metafield by ID
@@ -328,7 +349,10 @@ app.delete('/product-metafields/:id', async (req, res) => {
       productMetafield,
     });
   } catch (error) {
-    res.json({ error });
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
   }
 });
 
