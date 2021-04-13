@@ -15,10 +15,17 @@ app.use(express.json());
 // CREATE a new product
 app.post('/products', async (req, res) => {
   const data = { ...req.body };
-  const newProduct = await prisma.product.create({
-    data,
-  });
-  res.json(newProduct);
+  try {
+    const newProduct = await prisma.product.create({
+      data,
+    });
+    res.json(newProduct);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // READ products
@@ -143,10 +150,17 @@ app.delete('/products/handle/:handle', async (req, res) => {
 // CREATE product content
 app.post('/product-content', async (req, res) => {
   const data = { ...req.body };
-  const productContent = await prisma.productContent.create({
-    data,
-  });
-  res.json(productContent);
+  try {
+    const productContent = await prisma.productContent.create({
+      data,
+    });
+    res.json(productContent);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // READ many product content
@@ -198,10 +212,17 @@ app.delete('/product-content/:id', async (req, res) => {
 // CREATE a single product metafield
 app.post('/product-metafields', async (req, res) => {
   const data = { ...req.body };
-  const productMetafield = await prisma.productMetafield.create({
-    data,
-  });
-  res.json(productMetafield);
+  try {
+    const productMetafield = await prisma.productMetafield.create({
+      data,
+    });
+    res.json(productMetafield);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // READ many product metafields
@@ -257,10 +278,17 @@ app.delete('/product-metafields/:id', async (req, res) => {
 // CREATE a new variant
 app.post('/variants', async (req, res) => {
   const data = { ...req.body };
-  const variant = await prisma.variant.create({
-    data,
-  });
-  res.json(variant);
+  try {
+    const variant = await prisma.variant.create({
+      data,
+    });
+    res.json(variant);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // READ all variants
@@ -320,10 +348,17 @@ app.delete('/variants/:id', async (req, res) => {
 // CREATE a single variant content
 app.post('/variant-content', async (req, res) => {
   const data = { ...req.body };
-  const variantContent = await prisma.variantContent.create({
-    data,
-  });
-  res.json(variantContent);
+  try {
+    const variantContent = await prisma.variantContent.create({
+      data,
+    });
+    res.json(variantContent);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // READ many variant content
@@ -375,10 +410,17 @@ app.delete('/variant-content/:id', async (req, res) => {
 // CREATE a single variant metafield
 app.post('/variant-metafields', async (req, res) => {
   const data = { ...req.body };
-  const variantMetafield = await prisma.variantMetafield.create({
-    data,
-  });
-  res.json(variantMetafield);
+  try {
+    const variantMetafield = await prisma.variantMetafield.create({
+      data,
+    });
+    res.json(variantMetafield);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // READ variant metafields
