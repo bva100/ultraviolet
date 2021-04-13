@@ -31,51 +31,72 @@ app.post('/products', async (req, res) => {
 // READ products
 app.get('/products', async (req, res) => {
   const { skip, take } = req.query;
-  const products = await prisma.product.findMany({
-    skip: skip ? Number(skip) : 0,
-    take: take ? Number(take) : 25,
-    include: {
-      content: true,
-      variants: true,
-      metafields: true,
-    },
-  });
-  res.json(products);
+  try {
+    const products = await prisma.product.findMany({
+      skip: skip ? Number(skip) : 0,
+      take: take ? Number(take) : 25,
+      include: {
+        content: true,
+        variants: true,
+        metafields: true,
+      },
+    });
+    res.json(products);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // READ a single product by ID
 app.get('/products/:id', async (req, res) => {
   const { id } = req.params;
-  const product = await prisma.product.findUnique({
-    where: { id: Number(id) },
-    include: {
-      content: true,
-      variants: true,
-      metafields: true,
-    },
-  });
-  if (product === null) {
-    res.sendStatus(404);
-  } else {
-    res.json(product);
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id: Number(id) },
+      include: {
+        content: true,
+        variants: true,
+        metafields: true,
+      },
+    });
+    if (product === null) {
+      res.sendStatus(404);
+    } else {
+      res.json(product);
+    }
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
   }
 });
 
 // READ a single product by Handle
 app.get('/products/handle/:handle', async (req, res) => {
   const { handle } = req.params;
-  const product = await prisma.product.findUnique({
-    where: { handle },
-    include: {
-      content: true,
-      variants: true,
-      metafields: true,
-    },
-  });
-  if (product === null) {
-    res.sendStatus(404);
-  } else {
-    res.json(product);
+  try {
+    const product = await prisma.product.findUnique({
+      where: { handle },
+      include: {
+        content: true,
+        variants: true,
+        metafields: true,
+      },
+    });
+    if (product === null) {
+      res.sendStatus(404);
+    } else {
+      res.json(product);
+    }
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
   }
 });
 
@@ -91,7 +112,10 @@ app.put('/products/:id', async (req, res) => {
     });
     res.json(product);
   } catch (error) {
-    res.json({ error });
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
   }
 });
 
@@ -107,7 +131,10 @@ app.put('/products/handle/:handle', async (req, res) => {
     });
     res.json(product);
   } catch (error) {
-    res.json({ error });
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
   }
 });
 
@@ -123,7 +150,10 @@ app.delete('/products/:id', async (req, res) => {
       product,
     });
   } catch (error) {
-    res.json({ error });
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
   }
 });
 
@@ -139,7 +169,10 @@ app.delete('/products/handle/:handle', async (req, res) => {
       product,
     });
   } catch (error) {
-    res.json({ error });
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
   }
 });
 
