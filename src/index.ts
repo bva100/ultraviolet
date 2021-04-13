@@ -379,51 +379,79 @@ app.post('/variants', async (req, res) => {
 // READ all variants
 app.get('/variants', async (req, res) => {
   const { skip, take } = req.query;
-  const variants = await prisma.variant.findMany({
-    skip: skip ? Number(skip) : 0,
-    take: take ? Number(take) : 25,
-    include: {
-      content: true,
-      metafields: true,
-    },
-  });
-  res.json(variants);
+  try {
+    const variants = await prisma.variant.findMany({
+      skip: skip ? Number(skip) : 0,
+      take: take ? Number(take) : 25,
+      include: {
+        content: true,
+        metafields: true,
+      },
+    });
+    res.json(variants);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // READ variant by ID
 app.get('/variants/:id', async (req, res) => {
   const { id } = req.params;
-  const variant = await prisma.variant.findUnique({
-    where: { id: Number(id) },
-    include: {
-      content: true,
-      metafields: true,
-    },
-  });
-  res.json(variant);
+  try {
+    const variant = await prisma.variant.findUnique({
+      where: { id: Number(id) },
+      include: {
+        content: true,
+        metafields: true,
+      },
+    });
+    res.json(variant);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // UPDATE a single variant by ID
 app.put('/variants/:id', async (req, res) => {
   const { id } = req.params;
   const data = { ...req.body };
-  const variant = await prisma.variant.update({
-    where: { id: Number(id) },
-    data,
-  });
-  res.json(variant);
+  try {
+    const variant = await prisma.variant.update({
+      where: { id: Number(id) },
+      data,
+    });
+    res.json(variant);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // DELETE a single variant by ID
 app.delete('/variants/:id', async (req, res) => {
   const { id } = req.params;
-  const variant = await prisma.variant.delete({
-    where: { id: Number(id) },
-  });
-  res.json({
-    message: 'DELETE successful',
-    variant,
-  });
+  try {
+    const variant = await prisma.variant.delete({
+      where: { id: Number(id) },
+    });
+    res.json({
+      message: 'DELETE successful',
+      variant,
+    });
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // **************************
