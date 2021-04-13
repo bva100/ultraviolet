@@ -23,6 +23,7 @@ app.post('/products', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -45,6 +46,7 @@ app.get('/products', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -70,6 +72,7 @@ app.get('/products/:id', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -95,6 +98,7 @@ app.get('/products/handle/:handle', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -114,6 +118,7 @@ app.put('/products/:id', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -133,6 +138,7 @@ app.put('/products/handle/:handle', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -152,6 +158,7 @@ app.delete('/products/:id', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -171,6 +178,7 @@ app.delete('/products/handle/:handle', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -191,6 +199,7 @@ app.post('/product-content', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -208,6 +217,7 @@ app.get('/product-content', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -220,10 +230,15 @@ app.get('/product-content/:id', async (req, res) => {
     const productContent = await prisma.productContent.findUnique({
       where: { id: Number(id) },
     });
-    res.json(productContent);
+    if (productContent === null) {
+      res.sendStatus(404);
+    } else {
+      res.json(productContent);
+    }
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -242,6 +257,7 @@ app.put('/product-content/:id', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -261,6 +277,7 @@ app.delete('/product-content/:id', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -281,6 +298,7 @@ app.post('/product-metafields', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -298,6 +316,7 @@ app.get('/product-metafields', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -310,10 +329,15 @@ app.get('/product-metafields/:id', async (req, res) => {
     const productMetafield = await prisma.productMetafield.findUnique({
       where: { id: Number(id) },
     });
-    res.json(productMetafield);
+    if (productMetafield === null) {
+      res.sendStatus(404);
+    } else {
+      res.json(productMetafield);
+    }
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -332,6 +356,7 @@ app.put('/product-metafields/:id', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -351,6 +376,7 @@ app.delete('/product-metafields/:id', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -371,6 +397,7 @@ app.post('/variants', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -392,6 +419,7 @@ app.get('/variants', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -408,10 +436,15 @@ app.get('/variants/:id', async (req, res) => {
         metafields: true,
       },
     });
-    res.json(variant);
+    if (variant === null) {
+      res.sendStatus(404);
+    } else {
+      res.json(variant);
+    }
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -430,6 +463,7 @@ app.put('/variants/:id', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -449,6 +483,7 @@ app.delete('/variants/:id', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -469,6 +504,7 @@ app.post('/variant-content', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -486,6 +522,7 @@ app.get('/variant-content', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -498,10 +535,15 @@ app.get('/variant-content/:id', async (req, res) => {
     const variantContent = await prisma.variantContent.findUnique({
       where: { id: Number(id) },
     });
-    res.json(variantContent);
+    if (variantContent === null) {
+      res.sendStatus(404);
+    } else {
+      res.json(variantContent);
+    }
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -520,6 +562,7 @@ app.put('/variant-content/:id', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -539,6 +582,7 @@ app.delete('/variant-content/:id', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -559,6 +603,7 @@ app.post('/variant-metafields', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -576,6 +621,7 @@ app.get('/variant-metafields', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -588,10 +634,15 @@ app.get('/variant-metafields/:id', async (req, res) => {
     const variantMetafield = await prisma.variantMetafield.findUnique({
       where: { id: Number(id) },
     });
-    res.json(variantMetafield);
+    if (variantMetafield === null) {
+      res.sendStatus(404);
+    } else {
+      res.json(variantMetafield);
+    }
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -610,6 +661,7 @@ app.put('/variant-metafields/:id', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
@@ -629,6 +681,7 @@ app.delete('/variant-metafields/:id', async (req, res) => {
   } catch (error) {
     res.json({
       code: String(error.code),
+      meta: error.meta,
       message: String(error.message),
     });
   }
