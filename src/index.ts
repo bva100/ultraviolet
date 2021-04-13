@@ -207,13 +207,22 @@ app.post('/product-content', async (req, res) => {
 
 // READ many product content
 app.get('/product-content', async (req, res) => {
-  const { skip, take } = req.query;
+  const { skip, take, productHandle } = req.query;
   try {
-    const productContent = await prisma.productContent.findMany({
-      skip: skip ? Number(skip) : 0,
-      take: take ? Number(take) : 25,
-    });
-    res.json(productContent);
+    if (productHandle) {
+      const productContent = await prisma.productContent.findMany({
+        skip: skip ? Number(skip) : 0,
+        take: take ? Number(take) : 25,
+        where: { productHandle: String(productHandle) },
+      });
+      res.json(productContent);
+    } else {
+      const productContent = await prisma.productContent.findMany({
+        skip: skip ? Number(skip) : 0,
+        take: take ? Number(take) : 25,
+      });
+      res.json(productContent);
+    }
   } catch (error) {
     res.json({
       code: String(error.code),
