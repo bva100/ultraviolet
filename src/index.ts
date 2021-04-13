@@ -477,43 +477,71 @@ app.post('/variant-content', async (req, res) => {
 // READ many variant content
 app.get('/variant-content', async (req, res) => {
   const { skip, take } = req.query;
-  const variantContent = await prisma.variantContent.findMany({
-    skip: skip ? Number(skip) : 0,
-    take: take ? Number(take) : 25,
-  });
-  res.json(variantContent);
+  try {
+    const variantContent = await prisma.variantContent.findMany({
+      skip: skip ? Number(skip) : 0,
+      take: take ? Number(take) : 25,
+    });
+    res.json(variantContent);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // READ a single variant content by ID
 app.get('/variant-content/:id', async (req, res) => {
   const { id } = req.params;
-  const variantContent = await prisma.variantContent.findUnique({
-    where: { id: Number(id) },
-  });
-  res.json(variantContent);
+  try {
+    const variantContent = await prisma.variantContent.findUnique({
+      where: { id: Number(id) },
+    });
+    res.json(variantContent);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // UPDATE a single variant content by ID
 app.put('/variant-content/:id', async (req, res) => {
   const { id } = req.params;
   const data = { ...req.body };
-  const variantContent = await prisma.variantContent.update({
-    where: { id: Number(id) },
-    data,
-  });
-  res.json(variantContent);
+  try {
+    const variantContent = await prisma.variantContent.update({
+      where: { id: Number(id) },
+      data,
+    });
+    res.json(variantContent);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // DELETE a single variant content by ID
 app.delete('/variant-content/:id', async (req, res) => {
   const { id } = req.params;
-  const variantContent = await prisma.variantContent.delete({
-    where: { id: Number(id) },
-  });
-  res.json({
-    message: 'DELETE successful',
-    variantContent,
-  });
+  try {
+    const variantContent = await prisma.variantContent.delete({
+      where: { id: Number(id) },
+    });
+    res.json({
+      message: 'DELETE successful',
+      variantContent,
+    });
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      message: String(error.message),
+    });
+  }
 });
 
 // **************************
