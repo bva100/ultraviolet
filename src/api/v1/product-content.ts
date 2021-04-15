@@ -108,4 +108,4 @@ productContentRouter.delete('/:id', async (req, res) => {
   }
 });
 
-export default productContentRouter;
+export { productContentRouter };

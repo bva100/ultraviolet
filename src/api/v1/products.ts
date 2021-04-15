@@ -177,4 +177,4 @@ productsRouter.delete('/handle/:handle', async (req, res) => {
   }
 });
 
-export default productsRouter;
+export { productsRouter };

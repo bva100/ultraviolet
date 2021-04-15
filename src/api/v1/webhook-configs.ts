@@ -107,4 +107,4 @@ webhookConfigRouter.delete('/:id', async (req, res) => {
   }
 });
 
-export default webhookConfigRouter;
+export { webhookConfigRouter };

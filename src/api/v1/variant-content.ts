@@ -97,4 +97,4 @@ variantContentRouter.delete('/:id', async (req, res) => {
   }
 });
 
-export default variantContentRouter;
+export { variantContentRouter };

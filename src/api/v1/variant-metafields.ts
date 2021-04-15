@@ -97,4 +97,4 @@ variantMetafieldsRouter.delete('/:id', async (req, res) => {
   }
 });
 
-export default variantMetafieldsRouter;
+export { variantMetafieldsRouter };

@@ -102,4 +102,4 @@ productMetafieldsRouter.delete('/:id', async (req, res) => {
   }
 });
 
-export default productMetafieldsRouter;
+export { productMetafieldsRouter };

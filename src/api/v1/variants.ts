@@ -105,4 +105,4 @@ variantsRouter.delete('/:id', async (req, res) => {
   }
 });
 
-export default variantsRouter;
+export { variantsRouter };
