@@ -36,6 +36,6 @@ test('Set webhooks', () => {
   expect(emitter.webhooks).toBe(webhooks);
 });
 
-test('Send Webhooks sends out webhooks ', async () => {
-  await expect(emitter.sendWebhooks());
+test('sendWebhooks method sends out webhooks ', async () => {
+  await expect(emitter.sendWebhooks()).not.toBe(false);
 });
