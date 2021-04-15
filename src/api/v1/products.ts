@@ -7,10 +7,6 @@ const productsRouter = express.Router();
 const prisma = new PrismaClient();
 const emitter = new EventEmitter();
 
-// *****************
-// *** PRODUCTS ***
-// *****************
-
 productsRouter.post('/', async (req, res) => {
   const data = { ...req.body };
   try {

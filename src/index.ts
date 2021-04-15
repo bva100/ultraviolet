@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { EventEmitter } from 'events';
 import { WebhookEmitter } from '../src/webhook-emitter';
 import productsRouter from '../src/api/v1/products';
+import productContentRouter from '../src/api/v1/product-content';
 
 const prisma = new PrismaClient();
 const app = express();
@@ -10,114 +11,7 @@ const emitter = new EventEmitter();
 
 app.use(express.json());
 app.use('/api/v1/products', productsRouter);
-
-// **************************
-// *** PRODUCT CONTENT ******
-// **************************
-
-// CREATE product content
-app.post('/api/v1/product-content', async (req, res) => {
-  const data = { ...req.body };
-  try {
-    const productContent = await prisma.productContent.create({
-      data,
-    });
-    res.json(productContent);
-  } catch (error) {
-    res.json({
-      code: String(error.code),
-      meta: error.meta,
-      message: String(error.message),
-    });
-  }
-});
-
-// READ many product content
-app.get('/api/v1/product-content', async (req, res) => {
-  const { skip, take, productHandle } = req.query;
-  try {
-    if (productHandle) {
-      const productContent = await prisma.productContent.findMany({
-        skip: skip ? Number(skip) : 0,
-        take: take ? Number(take) : 25,
-        where: { productHandle: String(productHandle) },
-      });
-      res.json(productContent);
-    } else {
-      const productContent = await prisma.productContent.findMany({
-        skip: skip ? Number(skip) : 0,
-        take: take ? Number(take) : 25,
-      });
-      res.json(productContent);
-    }
-  } catch (error) {
-    res.json({
-      code: String(error.code),
-      meta: error.meta,
-      message: String(error.message),
-    });
-  }
-});
-
-// READ a product content by ID
-app.get('/api/v1/product-content/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    const productContent = await prisma.productContent.findUnique({
-      where: { id: Number(id) },
-    });
-    if (productContent === null) {
-      res.sendStatus(404);
-    } else {
-      res.json(productContent);
-    }
-  } catch (error) {
-    res.json({
-      code: String(error.code),
-      meta: error.meta,
-      message: String(error.message),
-    });
-  }
-});
-
-// UPDATE a single product content by ID
-app.put('/api/v1/product-content/:id', async (req, res) => {
-  const { id } = req.params;
-  const data = { ...req.body };
-  try {
-    const productContent = await prisma.productContent.update({
-      where: { id: Number(id) },
-      data,
-    });
-    res.json(productContent);
-  } catch (error) {
-    res.json({
-      code: String(error.code),
-      meta: error.meta,
-      message: String(error.message),
-    });
-  }
-});
-
-// DELETE a single product content by ID
-app.delete('/api/v1/product-content/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    const productContent = await prisma.productContent.delete({
-      where: { id: Number(id) },
-    });
-    res.json({
-      message: 'DELETE successful',
-      productContent,
-    });
-  } catch (error) {
-    res.json({
-      code: String(error.code),
-      meta: error.meta,
-      message: String(error.message),
-    });
-  }
-});
+app.use('/api/v1/product-content', productContentRouter);
 
 // **************************
 // *** PRODUCT METAFIELDS ***
