@@ -5,6 +5,7 @@ import { WebhookEmitter } from '../src/webhook-emitter';
 import productsRouter from '../src/api/v1/products';
 import productContentRouter from '../src/api/v1/product-content';
 import productMetafieldsRouter from '../src/api/v1/product-metafields';
+import variantsRouter from '../src/api/v1/variants';
 
 const prisma = new PrismaClient();
 const app = express();
@@ -14,113 +15,7 @@ app.use(express.json());
 app.use('/api/v1/products', productsRouter);
 app.use('/api/v1/product-content', productContentRouter);
 app.use('/api/v1/product-metafields', productMetafieldsRouter);
-
-// *****************
-// *** VARIANTS ****
-// *****************
-
-// CREATE a new variant
-app.post('/api/v1/variants', async (req, res) => {
-  const data = { ...req.body };
-  try {
-    const variant = await prisma.variant.create({
-      data,
-    });
-    res.json(variant);
-  } catch (error) {
-    res.json({
-      code: String(error.code),
-      meta: error.meta,
-      message: String(error.message),
-    });
-  }
-});
-
-// READ all variants
-app.get('/api/v1/variants', async (req, res) => {
-  const { skip, take } = req.query;
-  try {
-    const variants = await prisma.variant.findMany({
-      skip: skip ? Number(skip) : 0,
-      take: take ? Number(take) : 25,
-      include: {
-        content: true,
-        metafields: true,
-      },
-    });
-    res.json(variants);
-  } catch (error) {
-    res.json({
-      code: String(error.code),
-      meta: error.meta,
-      message: String(error.message),
-    });
-  }
-});
-
-// READ variant by ID
-app.get('/api/v1/variants/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    const variant = await prisma.variant.findUnique({
-      where: { id: Number(id) },
-      include: {
-        content: true,
-        metafields: true,
-      },
-    });
-    if (variant === null) {
-      res.sendStatus(404);
-    } else {
-      res.json(variant);
-    }
-  } catch (error) {
-    res.json({
-      code: String(error.code),
-      meta: error.meta,
-      message: String(error.message),
-    });
-  }
-});
-
-// UPDATE a single variant by ID
-app.put('/api/v1/variants/:id', async (req, res) => {
-  const { id } = req.params;
-  const data = { ...req.body };
-  try {
-    const variant = await prisma.variant.update({
-      where: { id: Number(id) },
-      data,
-    });
-    res.json(variant);
-  } catch (error) {
-    res.json({
-      code: String(error.code),
-      meta: error.meta,
-      message: String(error.message),
-    });
-  }
-});
-
-// DELETE a single variant by ID
-app.delete('/api/v1/variants/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    const variant = await prisma.variant.delete({
-      where: { id: Number(id) },
-    });
-    res.json({
-      message: 'DELETE successful',
-      variant,
-    });
-  } catch (error) {
-    res.json({
-      code: String(error.code),
-      meta: error.meta,
-      message: String(error.message),
-    });
-  }
-});
+app.use('/api/v1/variants', variantsRouter);
 
 // **************************
 // *** VARIANT CONTENT ***
