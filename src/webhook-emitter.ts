@@ -1,9 +1,8 @@
-import { prisma, PrismaClient } from '.prisma/client';
+import axios from 'axios';
+import { PrismaClient } from '.prisma/client';
 import { Webhook } from './webhook';
 
 export class WebhookEmitter {
-  orm: typeof prisma | any;
-
   topic: string;
 
   objectId: number;
@@ -14,8 +13,7 @@ export class WebhookEmitter {
 
   webhooks: Webhook[];
 
-  constructor(orm: any, topic: string, objectId: number, objectPayload: any, objectInput: any) {
-    this.orm = orm;
+  constructor(topic: string, objectId: number, objectPayload: any, objectInput: any) {
     this.topic = topic;
     this.objectId = objectId;
     this.objectPayload = objectPayload;
@@ -23,16 +21,40 @@ export class WebhookEmitter {
     this.webhooks = [];
   }
 
-  async loadHooks(): Promise<any> {
-    // const webhookConfigs = this.orm.webhookConfigs.findMany({
-    //   where: {topic: this.topic}},
-    // })
+  // this is tightly coupled with Prisma. Ideally primsa is injected or a factory object is used.
+  // add test for this
+  async loadWebhooks(): Promise<Webhook[]> {
     const prisma = new PrismaClient();
     const webhookConfigs = await prisma.webhookConfig.findMany({
       where: { topic: this.topic },
     });
-    console.log('webhook configs ', webhookConfigs);
-    // return webhookConfigs;
+    this.webhooks = webhookConfigs.map((webhookConfig) => {
+      const webhook = new Webhook(webhookConfig.url, webhookConfig.signature);
+      return webhook;
+    });
+    return this.webhooks;
+  }
+
+  async sendWebhooks(): Promise<boolean> {
+    this.webhooks.forEach(async (webhook) => {
+      try {
+        const response = await axios.post(webhook.url, {
+          topic: this.topic,
+          objectId: this.objectId,
+          objectPayload: this.objectPayload,
+          objectInput: this.objectInput,
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-ultraviolet-signature': webhook.signature,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
+    });
+    return true;
   }
 }
 
