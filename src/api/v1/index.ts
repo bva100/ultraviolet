@@ -1,4 +1,3 @@
-export * from './index-test';
 export * from './product-content';
 export * from './product-metafields';
 export * from './products';
