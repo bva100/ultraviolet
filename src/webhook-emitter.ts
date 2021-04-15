@@ -21,7 +21,7 @@ export class WebhookEmitter {
     this.webhooks = [];
   }
 
-  // this is tightly coupled with Prisma. Ideally primsa is injected or a factory object is used.
+  // this is tightly coupled with Prisma. Ideally Primsa is injected or a factory object is used.
   // add test for this
   async loadWebhooks(): Promise<Webhook[]> {
     const prisma = new PrismaClient();
