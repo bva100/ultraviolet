@@ -4,6 +4,7 @@ import { EventEmitter } from 'events';
 import { WebhookEmitter } from '../src/webhook-emitter';
 import productsRouter from '../src/api/v1/products';
 import productContentRouter from '../src/api/v1/product-content';
+import productMetafieldsRouter from '../src/api/v1/product-metafields';
 
 const prisma = new PrismaClient();
 const app = express();
@@ -12,105 +13,7 @@ const emitter = new EventEmitter();
 app.use(express.json());
 app.use('/api/v1/products', productsRouter);
 app.use('/api/v1/product-content', productContentRouter);
-
-// **************************
-// *** PRODUCT METAFIELDS ***
-// **************************
-
-// CREATE a single product metafield
-app.post('/api/v1/product-metafields', async (req, res) => {
-  const data = { ...req.body };
-  try {
-    const productMetafield = await prisma.productMetafield.create({
-      data,
-    });
-    res.json(productMetafield);
-  } catch (error) {
-    res.json({
-      code: String(error.code),
-      meta: error.meta,
-      message: String(error.message),
-    });
-  }
-});
-
-// READ many product metafields
-app.get('/api/v1/product-metafields', async (req, res) => {
-  const { skip, take } = req.query;
-  try {
-    const productMetafields = await prisma.productMetafield.findMany({
-      skip: skip ? Number(skip) : 0,
-      take: take ? Number(take) : 25,
-    });
-    res.json(productMetafields);
-  } catch (error) {
-    res.json({
-      code: String(error.code),
-      meta: error.meta,
-      message: String(error.message),
-    });
-  }
-});
-
-// READ product metafield by ID
-app.get('/api/v1/product-metafields/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    const productMetafield = await prisma.productMetafield.findUnique({
-      where: { id: Number(id) },
-    });
-    if (productMetafield === null) {
-      res.sendStatus(404);
-    } else {
-      res.json(productMetafield);
-    }
-  } catch (error) {
-    res.json({
-      code: String(error.code),
-      meta: error.meta,
-      message: String(error.message),
-    });
-  }
-});
-
-// UPDATE a single product metafield by ID
-app.put('/api/v1/product-metafields/:id', async (req, res) => {
-  const { id } = req.params;
-  const data = { ...req.body };
-  try {
-    const productMetafield = await prisma.productMetafield.update({
-      where: { id: Number(id) },
-      data,
-    });
-    res.json(productMetafield);
-  } catch (error) {
-    res.json({
-      code: String(error.code),
-      meta: error.meta,
-      message: String(error.message),
-    });
-  }
-});
-
-// Delete product metafield by ID
-app.delete('/api/v1/product-metafields/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    const productMetafield = await prisma.productMetafield.delete({
-      where: { id: Number(id) },
-    });
-    res.json({
-      message: 'DELETE successful',
-      productMetafield,
-    });
-  } catch (error) {
-    res.json({
-      code: String(error.code),
-      meta: error.meta,
-      message: String(error.message),
-    });
-  }
-});
+app.use('/api/v1/product-metafields', productMetafieldsRouter);
 
 // *****************
 // *** VARIANTS ****
