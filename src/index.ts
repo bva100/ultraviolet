@@ -1,8 +1,11 @@
 import { PrismaClient } from '@prisma/client';
-import express, { application } from 'express';
+import express from 'express';
+import { EventEmitter } from 'events';
+import { WebhookEmitter } from '../src/webhook-emitter';
 
 const prisma = new PrismaClient();
 const app = express();
+const emitter = new EventEmitter();
 
 app.use(express.json());
 
@@ -106,13 +109,13 @@ app.get('/api/v1/products/handle/:handle', async (req, res) => {
 app.put('/api/v1/products/:id', async (req, res) => {
   const { id } = req.params;
   const data = { ...req.body };
-  delete data.handle;
   try {
     const product = await prisma.product.update({
       where: { id: Number(id) },
       data,
     });
     res.json(product);
+    emitter.emit('update-product', id, product, data);
   } catch (error) {
     res.json({
       code: String(error.code),
@@ -120,6 +123,12 @@ app.put('/api/v1/products/:id', async (req, res) => {
       message: String(error.message),
     });
   }
+});
+
+emitter.on('update-product', async (id, objectPayload, objectIntput) => {
+  const webhookEvent = new WebhookEmitter('update-product', id, objectPayload, objectIntput);
+  await webhookEvent.loadWebhooks();
+  await webhookEvent.sendWebhooks();
 });
 
 // UPDATE a single product by Handle
