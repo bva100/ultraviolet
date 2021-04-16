@@ -1,11 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import express from 'express';
-import { EventEmitter } from 'events';
-import { WebhookEmitter } from '../../webhook-emitter';
+import eventTrigger from '../../event-trigger';
 
 const variantMetafieldsRouter = express.Router();
 const prisma = new PrismaClient();
-const emitter = new EventEmitter();
 
 variantMetafieldsRouter.post('/', async (req, res) => {
   const data = { ...req.body };
@@ -14,6 +12,7 @@ variantMetafieldsRouter.post('/', async (req, res) => {
       data,
     });
     res.json(variantMetafield);
+    eventTrigger('create-variant-metafield', variantMetafield, data);
   } catch (error) {
     res.json({
       code: String(error.code),
@@ -69,6 +68,7 @@ variantMetafieldsRouter.put('/:id', async (req, res) => {
       data,
     });
     res.json(variantMetafield);
+    eventTrigger('update-variant-metafield', variantMetafield, data);
   } catch (error) {
     res.json({
       code: String(error.code),
@@ -88,6 +88,7 @@ variantMetafieldsRouter.delete('/:id', async (req, res) => {
       message: 'DELETE successful',
       variantMetafield,
     });
+    eventTrigger('delete-variant-metafield', variantMetafield, {});
   } catch (error) {
     res.json({
       code: String(error.code),
