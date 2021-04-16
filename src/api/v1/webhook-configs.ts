@@ -1,11 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import express from 'express';
-import { EventEmitter } from 'events';
-import { WebhookEmitter } from '../../webhook-emitter';
 
 const webhookConfigRouter = express.Router();
 const prisma = new PrismaClient();
-const emitter = new EventEmitter();
 
 webhookConfigRouter.post('/', async (req, res) => {
   const data = { ...req.body };
