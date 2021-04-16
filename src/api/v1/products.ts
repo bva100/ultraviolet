@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import express from 'express';
-import { WebhookEmitter } from '../../webhook-emitter';
+import eventTrigger from '../../event-trigger';
 
 const productsRouter = express.Router();
 const prisma = new PrismaClient();
@@ -12,6 +12,7 @@ productsRouter.post('/', async (req, res) => {
       data,
     });
     res.json(newProduct);
+    eventTrigger('create-product', newProduct, data);
   } catch (error) {
     res.json({
       code: String(error.code),
@@ -102,6 +103,7 @@ productsRouter.put('/:id', async (req, res) => {
       data,
     });
     res.json(product);
+    eventTrigger('update-product', product, data);
   } catch (error) {
     res.json({
       code: String(error.code),
@@ -111,23 +113,16 @@ productsRouter.put('/:id', async (req, res) => {
   }
 });
 
-function eventTrigger(topic: string, objectPayload: string, objectIntput: string): boolean => {
-  const webhookEvent = new WebhookEmitter(topic, objectPayload, objectIntput);
-  await webhookEvent.loadWebhooks();
-  await webhookEvent.sendWebhooks();
-  return true
-});
-
 productsRouter.put('/handle/:handle', async (req, res) => {
   const { handle } = req.params;
   const data = { ...req.body };
-  delete data.handle;
   try {
     const product = await prisma.product.update({
       where: { handle },
       data,
     });
     res.json(product);
+    eventTrigger('update-product', product, data);
   } catch (error) {
     res.json({
       code: String(error.code),
@@ -147,6 +142,7 @@ productsRouter.delete('/:id', async (req, res) => {
       message: 'DELETE successful',
       product,
     });
+    eventTrigger('delete-product', product, {});
   } catch (error) {
     res.json({
       code: String(error.code),
@@ -166,6 +162,7 @@ productsRouter.delete('/handle/:handle', async (req, res) => {
       message: 'DELETE successful',
       product,
     });
+    eventTrigger('delete-product', product, {});
   } catch (error) {
     res.json({
       code: String(error.code),
