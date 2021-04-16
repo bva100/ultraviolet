@@ -1,13 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import express from 'express';
-import { EventEmitter } from 'events';
-import { WebhookEmitter } from '../../webhook-emitter';
+import eventTrigger from '../../event-trigger';
 
 const productMetafieldsRouter = express.Router();
 const prisma = new PrismaClient();
-const emitter = new EventEmitter();
 
-// CREATE a single product metafield
 productMetafieldsRouter.post('/', async (req, res) => {
   const data = { ...req.body };
   try {
@@ -15,6 +12,7 @@ productMetafieldsRouter.post('/', async (req, res) => {
       data,
     });
     res.json(productMetafield);
+    eventTrigger('create-product-metafield', productMetafield, data);
   } catch (error) {
     res.json({
       code: String(error.code),
@@ -24,7 +22,6 @@ productMetafieldsRouter.post('/', async (req, res) => {
   }
 });
 
-// READ many product metafields
 productMetafieldsRouter.get('/', async (req, res) => {
   const { skip, take } = req.query;
   try {
@@ -42,7 +39,6 @@ productMetafieldsRouter.get('/', async (req, res) => {
   }
 });
 
-// READ product metafield by ID
 productMetafieldsRouter.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -63,7 +59,6 @@ productMetafieldsRouter.get('/:id', async (req, res) => {
   }
 });
 
-// UPDATE a single product metafield by ID
 productMetafieldsRouter.put('/:id', async (req, res) => {
   const { id } = req.params;
   const data = { ...req.body };
@@ -73,6 +68,7 @@ productMetafieldsRouter.put('/:id', async (req, res) => {
       data,
     });
     res.json(productMetafield);
+    eventTrigger('update-product-metafield', productMetafield, data);
   } catch (error) {
     res.json({
       code: String(error.code),
@@ -93,6 +89,7 @@ productMetafieldsRouter.delete('/:id', async (req, res) => {
       message: 'DELETE successful',
       productMetafield,
     });
+    eventTrigger('delete-product-metafield', productMetafield, {});
   } catch (error) {
     res.json({
       code: String(error.code),
