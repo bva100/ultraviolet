@@ -3,17 +3,12 @@ import { WebhookEmitter } from '../../src/webhook-emitter';
 import { Webhook } from '../../src/webhook';
 
 const topic = 'create-product';
-const objectId = 25;
 const objectPayload = { foo: 'bar', boom: 'baz' };
 const objectInput = { foo: 'bar' };
-const emitter = new WebhookEmitter(topic, objectId, objectPayload, objectInput);
+const emitter = new WebhookEmitter(topic, objectPayload, objectInput);
 
 test('Constructor sets topic', () => {
   expect(emitter.topic).toBe(topic);
-});
-
-test('Constructor sets objectId', () => {
-  expect(emitter.objectId).toBe(objectId);
 });
 
 test('Constuctor sets objectPayload', () => {

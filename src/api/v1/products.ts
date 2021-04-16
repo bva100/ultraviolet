@@ -1,11 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import express from 'express';
-import { EventEmitter } from 'events';
 import { WebhookEmitter } from '../../webhook-emitter';
 
 const productsRouter = express.Router();
 const prisma = new PrismaClient();
-const emitter = new EventEmitter();
 
 productsRouter.post('/', async (req, res) => {
   const data = { ...req.body };
@@ -104,7 +102,6 @@ productsRouter.put('/:id', async (req, res) => {
       data,
     });
     res.json(product);
-    emitter.emit('update-product', id, product, data);
   } catch (error) {
     res.json({
       code: String(error.code),
@@ -114,10 +111,11 @@ productsRouter.put('/:id', async (req, res) => {
   }
 });
 
-emitter.on('update-product', async (id, objectPayload, objectIntput) => {
-  const webhookEvent = new WebhookEmitter('update-product', id, objectPayload, objectIntput);
+function eventTrigger(topic: string, objectPayload: string, objectIntput: string): boolean => {
+  const webhookEvent = new WebhookEmitter(topic, objectPayload, objectIntput);
   await webhookEvent.loadWebhooks();
   await webhookEvent.sendWebhooks();
+  return true
 });
 
 productsRouter.put('/handle/:handle', async (req, res) => {

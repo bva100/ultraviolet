@@ -5,17 +5,14 @@ import { Webhook } from './webhook';
 export class WebhookEmitter {
   topic: string;
 
-  objectId: number;
-
   objectPayload: any;
 
   objectInput: any;
 
   webhooks: Webhook[];
 
-  constructor(topic: string, objectId: number, objectPayload: any, objectInput: any) {
+  constructor(topic: string, objectPayload: any, objectInput: any) {
     this.topic = topic;
-    this.objectId = objectId;
     this.objectPayload = objectPayload;
     this.objectInput = objectInput;
     this.webhooks = [];
@@ -40,7 +37,6 @@ export class WebhookEmitter {
       try {
         const response = await axios.post(webhook.url, {
           topic: this.topic,
-          objectId: this.objectId,
           objectPayload: this.objectPayload,
           objectInput: this.objectInput,
         }, {
