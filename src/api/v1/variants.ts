@@ -1,11 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import express from 'express';
-import { EventEmitter } from 'events';
-import { WebhookEmitter } from '../../webhook-emitter';
+import eventTrigger from '../../event-trigger';
 
 const variantsRouter = express.Router();
 const prisma = new PrismaClient();
-const emitter = new EventEmitter();
 
 variantsRouter.post('/', async (req, res) => {
   const data = { ...req.body };
@@ -14,6 +12,7 @@ variantsRouter.post('/', async (req, res) => {
       data,
     });
     res.json(variant);
+    eventTrigger('create-variant', variant, data);
   } catch (error) {
     res.json({
       code: String(error.code),
@@ -77,6 +76,7 @@ variantsRouter.put('/:id', async (req, res) => {
       data,
     });
     res.json(variant);
+    eventTrigger('update-variant', variant, data);
   } catch (error) {
     res.json({
       code: String(error.code),
@@ -96,6 +96,7 @@ variantsRouter.delete('/:id', async (req, res) => {
       message: 'DELETE successful',
       variant,
     });
+    eventTrigger('delete-variant', variant, {});
   } catch (error) {
     res.json({
       code: String(error.code),
