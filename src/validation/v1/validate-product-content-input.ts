@@ -9,7 +9,6 @@ export default async (action: string, inputData: any): Promise<ValidationRespons
     return new ValidationResponse(false, 422, 'Product Content must include a productId which is the ID of the parent product', inputData);
   }
 
-  // get handle for parent product
   const cleansedData = inputData;
   try {
     // get product handle associated with parent product by querying with productId
@@ -22,7 +21,7 @@ export default async (action: string, inputData: any): Promise<ValidationRespons
       }
       cleansedData.productHandle = product.handle;
     } else if (action === 'update') {
-      // do not allow product handle to be updated
+      // on updates, do not allow product handle to be altered
       delete cleansedData.productHandle;
     }
     return new ValidationResponse(true, 200, 'Product Content inputData is valid', cleansedData);
