@@ -10,6 +10,13 @@ variantMetafieldsRouter.post('/', async (req, res) => {
   try {
     const variantMetafield = await prisma.variantMetafield.create({
       data,
+      include: {
+        Variant: {
+          include: {
+            Product: true,
+          },
+        },
+      },
     });
     res.json(variantMetafield);
     eventTrigger('create-variant-metafield', variantMetafield, data);
@@ -66,6 +73,13 @@ variantMetafieldsRouter.put('/:id', async (req, res) => {
     const variantMetafield = await prisma.variantMetafield.update({
       where: { id: Number(id) },
       data,
+      include: {
+        Variant: {
+          include: {
+            Product: true,
+          },
+        },
+      },
     });
     res.json(variantMetafield);
     eventTrigger('update-variant-metafield', variantMetafield, data);
@@ -83,6 +97,13 @@ variantMetafieldsRouter.delete('/:id', async (req, res) => {
   try {
     const variantMetafield = await prisma.variantMetafield.delete({
       where: { id: Number(id) },
+      include: {
+        Variant: {
+          include: {
+            Product: true,
+          },
+        },
+      },
     });
     res.json({
       message: 'DELETE successful',
