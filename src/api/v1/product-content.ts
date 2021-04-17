@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import express from 'express';
 import eventTrigger from '../../event-trigger';
+import ValidationResponse from '../../validation/v1/validation-response';
 
 const productContentRouter = express.Router();
 const prisma = new PrismaClient();
@@ -107,14 +108,14 @@ productContentRouter.delete('/:id', async (req, res) => {
   }
 });
 
-const validateProductContentInput = async (inputData: any): Promise<validationResponse> => {
+const validateProductContentInput = async (inputData: any): Promise<ValidationResponse> => {
   if (!inputData.productId) {
     return new ValidationResponse(false, 422, 'Product Content must include a productId which is the ID of the parent product');
   }
-  const productHandle = await prisma.product.findOne({
+  const productHandle = await prisma.product.findUnique({
     where: { id: Number(inputData.id) },
   });
-  return false;
+  return new ValidationResponse(true, 200, 'Product Content inputData is valid');
 };
 
 export { productContentRouter };
