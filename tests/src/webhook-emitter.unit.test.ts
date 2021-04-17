@@ -1,4 +1,3 @@
-import { emit } from 'node:process';
 import { WebhookEmitter } from '../../src/webhook-emitter';
 import { Webhook } from '../../src/webhook';
 

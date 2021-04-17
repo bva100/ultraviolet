@@ -107,4 +107,14 @@ productContentRouter.delete('/:id', async (req, res) => {
   }
 });
 
+const validateProductContentInput = async (inputData: any): Promise<validationResponse> => {
+  if (!inputData.productId) {
+    return new ValidationResponse(false, 422, 'Product Content must include a productId which is the ID of the parent product');
+  }
+  const productHandle = await prisma.product.findOne({
+    where: { id: Number(inputData.id) },
+  });
+  return false;
+};
+
 export { productContentRouter };
