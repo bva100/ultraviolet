@@ -10,6 +10,9 @@ productMetafieldsRouter.post('/', async (req, res) => {
   try {
     const productMetafield = await prisma.productMetafield.create({
       data,
+      include: {
+        Product: true,
+      },
     });
     res.json(productMetafield);
     eventTrigger('create-product-metafield', productMetafield, data);
@@ -66,6 +69,9 @@ productMetafieldsRouter.put('/:id', async (req, res) => {
     const productMetafield = await prisma.productMetafield.update({
       where: { id: Number(id) },
       data,
+      include: {
+        Product: true,
+      },
     });
     res.json(productMetafield);
     eventTrigger('update-product-metafield', productMetafield, data);
@@ -84,6 +90,9 @@ productMetafieldsRouter.delete('/:id', async (req, res) => {
   try {
     const productMetafield = await prisma.productMetafield.delete({
       where: { id: Number(id) },
+      include: {
+        Product: true,
+      },
     });
     res.json({
       message: 'DELETE successful',
