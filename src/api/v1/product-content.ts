@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 // routes
 productContentRouter.post('/', async (req, res) => {
   let data = { ...req.body };
-  const validated = await validateProductContentInput(data);
+  const validated = await validateProductContentInput('create', data);
   if (!validated.valid) {
     res.status(validated.status).json({
       message: validated.message,
@@ -81,7 +81,16 @@ productContentRouter.get('/:id', async (req, res) => {
 
 productContentRouter.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const data = { ...req.body };
+  let data = { ...req.body };
+  const validated = await validateProductContentInput('update', data);
+  if (!validated.valid) {
+    res.status(validated.status).json({
+      message: validated.message,
+      inputData: data,
+    });
+    return false;
+  }
+  data = validated.cleansedData;
   try {
     const productContent = await prisma.productContent.update({
       where: { id: Number(id) },
