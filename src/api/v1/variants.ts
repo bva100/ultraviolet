@@ -10,6 +10,9 @@ variantsRouter.post('/', async (req, res) => {
   try {
     const variant = await prisma.variant.create({
       data,
+      include: {
+        Product: true,
+      },
     });
     res.json(variant);
     eventTrigger('create-variant', variant, data);
@@ -74,6 +77,9 @@ variantsRouter.put('/:id', async (req, res) => {
     const variant = await prisma.variant.update({
       where: { id: Number(id) },
       data,
+      include: {
+        Product: true,
+      },
     });
     res.json(variant);
     eventTrigger('update-variant', variant, data);
@@ -91,6 +97,9 @@ variantsRouter.delete('/:id', async (req, res) => {
   try {
     const variant = await prisma.variant.delete({
       where: { id: Number(id) },
+      include: {
+        Product: true,
+      },
     });
     res.json({
       message: 'DELETE successful',
