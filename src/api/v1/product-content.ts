@@ -21,6 +21,9 @@ productContentRouter.post('/', async (req, res) => {
   try {
     const productContent = await prisma.productContent.create({
       data,
+      include: {
+        Product: true,
+      },
     });
     res.json(productContent);
     eventTrigger('create-product-content', productContent, data);
@@ -95,6 +98,9 @@ productContentRouter.put('/:id', async (req, res) => {
     const productContent = await prisma.productContent.update({
       where: { id: Number(id) },
       data,
+      include: {
+        Product: true,
+      },
     });
     res.json(productContent);
     eventTrigger('update-product-content', productContent, data);
@@ -112,6 +118,9 @@ productContentRouter.delete('/:id', async (req, res) => {
   try {
     const productContent = await prisma.productContent.delete({
       where: { id: Number(id) },
+      include: {
+        Product: true,
+      },
     });
     res.json({
       message: 'DELETE successful',
