@@ -10,6 +10,13 @@ variantContentRouter.post('/', async (req, res) => {
   try {
     const variantContent = await prisma.variantContent.create({
       data,
+      include: {
+        Variant: {
+          include: {
+            Product: true,
+          },
+        },
+      },
     });
     res.json(variantContent);
     eventTrigger('create-variant-content', variantContent, data);
@@ -66,6 +73,13 @@ variantContentRouter.put('/:id', async (req, res) => {
     const variantContent = await prisma.variantContent.update({
       where: { id: Number(id) },
       data,
+      include: {
+        Variant: {
+          include: {
+            Product: true,
+          },
+        },
+      },
     });
     res.json(variantContent);
     eventTrigger('update-variant-content', variantContent, data);
@@ -83,6 +97,13 @@ variantContentRouter.delete('/:id', async (req, res) => {
   try {
     const variantContent = await prisma.variantContent.delete({
       where: { id: Number(id) },
+      include: {
+        Variant: {
+          include: {
+            Product: true,
+          },
+        },
+      },
     });
     res.json({
       message: 'DELETE successful',
