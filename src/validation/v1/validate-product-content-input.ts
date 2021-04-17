@@ -1,3 +1,5 @@
+// THIS IS NOT BEING USED
+// Example for future validation if needed
 import { PrismaClient } from '@prisma/client';
 import ValidationResponse from './validation-response';
 

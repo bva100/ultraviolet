@@ -1,3 +1,5 @@
+// THIS IS NOT BEING USED
+// Example for future validation if needed
 export default class ValidationResponse {
   valid: boolean;
 

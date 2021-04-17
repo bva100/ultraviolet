@@ -8,16 +8,7 @@ const prisma = new PrismaClient();
 
 // routes
 productContentRouter.post('/', async (req, res) => {
-  let data = { ...req.body };
-  const validated = await validateProductContentInput('create', data);
-  if (!validated.valid) {
-    res.status(validated.status).json({
-      message: validated.message,
-      inputData: data,
-    });
-    return false;
-  }
-  data = validated.cleansedData;
+  const data = { ...req.body };
   try {
     const productContent = await prisma.productContent.create({
       data,
@@ -37,13 +28,13 @@ productContentRouter.post('/', async (req, res) => {
 });
 
 productContentRouter.get('/', async (req, res) => {
-  const { skip, take, productHandle } = req.query;
+  const { skip, take, productId } = req.query;
   try {
-    if (productHandle) {
+    if (productId) {
       const productContent = await prisma.productContent.findMany({
         skip: skip ? Number(skip) : 0,
         take: take ? Number(take) : 25,
-        where: { productHandle: String(productHandle) },
+        where: { productId: Number(productId) },
       });
       res.json(productContent);
     } else {

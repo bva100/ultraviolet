@@ -37,17 +37,16 @@ model ProductMetafield {
 }
 
 model ProductContent {
-  id            Int      @id @default(autoincrement())
-  Product       Product? @relation(fields: [productId], references: [id])
-  productId     Int?
-  productHandle String
-  locale        String
-  title         String?
-  description   String?
-  fields        Json?
-  published     Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  Product     Product? @relation(fields: [productId], references: [id])
+  productId   Int?
+  locale      String
+  title       String?
+  description String?
+  fields      Json?
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   // featuredMedia, media
 }
 
