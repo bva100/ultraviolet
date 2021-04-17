@@ -7,7 +7,7 @@ import {
   variantContentRouter,
   variantMetafieldsRouter,
   webhookConfigRouter,
-} from '../src/api/v1/index';
+} from './api/v1/index';
 
 const app = express();
 

@@ -1,4 +1,4 @@
-import { WebhookEmitter } from '../src/webhook-emitter';
+import { WebhookEmitter } from './webhook-emitter';
 
 export default async (topic: string, objectPayload: any, objectInput: any): Promise<boolean> => {
   // send webhooks to all listeners
