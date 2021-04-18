@@ -18,14 +18,12 @@ export class WebhookEmitter {
     this.webhooks = [];
   }
 
-  // this is tightly coupled with Prisma. Ideally Primsa is injected or a factory object is used.
-  // add test for this
   async loadWebhooks(): Promise<Webhook[]> {
     const prisma = new PrismaClient();
     const webhookConfigs = await prisma.webhookConfig.findMany({
       where: { topic: this.topic },
     });
-    this.webhooks = webhookConfigs.map((webhookConfig) => {
+    this.webhooks = webhookConfigs.map((webhookConfig: any) => {
       const webhook = new Webhook(webhookConfig.url, webhookConfig.signature);
       return webhook;
     });
