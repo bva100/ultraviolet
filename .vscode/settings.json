@@ -1,5 +1,9 @@
 {
   "exportall.config.folderListener": [
     "/src/api/v1"
+  ],
+  "cSpell.ignoreWords": [
+    "getnacelle",
+    "ultraviolet"
   ]
 }
