@@ -76,4 +76,30 @@ productMediaRouter.get('/:id', async (req, res) => {
   }
 });
 
+productMediaRouter.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const data = { ...req.body };
+  try {
+    const productMedia = await prisma.productMedia.update({
+      where: { id: Number(id) },
+      data,
+      include: {
+        ProductContent: {
+          include: {
+            Product: true,
+          },
+        },
+      },
+    });
+    res.json(productMedia);
+    eventTrigger('update-product-media', productMedia, data);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      meta: error.meta,
+      message: String(error.message),
+    });
+  }
+});
+
 export { productMediaRouter };
