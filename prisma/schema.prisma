@@ -57,7 +57,7 @@ model ProductMedia {
   src              String
   thumbnailSrc     String?
   mimeType         String
-  // alt text
+  altText          String?
 }
 
 model Variant {
@@ -113,7 +113,7 @@ model VariantMedia {
   src              String
   thumbnailSrc     String?
   mimeType         String
-  // alt text
+  altText          String?
 }
 
 model WebhookConfig {
