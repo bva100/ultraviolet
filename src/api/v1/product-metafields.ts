@@ -84,7 +84,6 @@ productMetafieldsRouter.put('/:id', async (req, res) => {
   }
 });
 
-// Delete product metafield by ID
 productMetafieldsRouter.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {

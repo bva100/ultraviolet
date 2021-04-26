@@ -102,4 +102,31 @@ productMediaRouter.put('/:id', async (req, res) => {
   }
 });
 
+productMediaRouter.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const productMedia = await prisma.productMedia.delete({
+      where: { id: Number(id) },
+      include: {
+        ProductContent: {
+          include: {
+            Product: true,
+          },
+        },
+      },
+    });
+    res.json({
+      message: 'DELETE successful',
+      productMedia,
+    });
+    eventTrigger('delete-product-media', productMedia, {});
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      meta: error.meta,
+      message: String(error.message),
+    });
+  }
+});
+
 export { productMediaRouter };
