@@ -110,4 +110,35 @@ variantMediaRouter.put('/:id', async (req, res) => {
   }
 });
 
+variantMediaRouter.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const variantMedia = await prisma.variantMedia.delete({
+      where: { id: Number(id) },
+      include: {
+        VariantContent: {
+          include: {
+            Variant: {
+              include: {
+                Product: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    res.json({
+      message: 'DELETE successful',
+      variantMedia,
+    });
+    eventTrigger('delete-variant-media', variantMedia, {});
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      meta: error.meta,
+      message: String(error.message),
+    });
+  }
+});
+
 export { variantMediaRouter };
