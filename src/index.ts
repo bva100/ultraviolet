@@ -2,6 +2,7 @@ import express from 'express';
 import {
   productsRouter,
   productContentRouter,
+  productMediaRouter,
   productMetafieldsRouter,
   variantsRouter,
   variantContentRouter,
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use('/api/v1/products', productsRouter);
 app.use('/api/v1/product-content', productContentRouter);
 app.use('/api/v1/product-metafields', productMetafieldsRouter);
+app.use('/api/v1/product-media', productMediaRouter);
 app.use('/api/v1/variants', variantsRouter);
 app.use('/api/v1/variant-content', variantContentRouter);
 app.use('/api/v1/variant-metafields', variantMetafieldsRouter);

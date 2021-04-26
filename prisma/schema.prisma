@@ -37,17 +37,27 @@ model ProductMetafield {
 }
 
 model ProductContent {
-  id          Int      @id @default(autoincrement())
-  Product     Product? @relation(fields: [productId], references: [id])
+  id          Int            @id @default(autoincrement())
+  Product     Product?       @relation(fields: [productId], references: [id])
   productId   Int?
   locale      String
   title       String?
   description String?
   fields      Json?
-  published   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  // featuredMedia, media
+  media       ProductMedia[]
+  published   Boolean        @default(false)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model ProductMedia {
+  id               Int             @id @default(autoincrement())
+  ProductContent   ProductContent? @relation(fields: [productContentId], references: [id])
+  productContentId Int?
+  src              String
+  thumbnailSrc     String?
+  mimeType         String
+  // ProductMediaMetafields ?
 }
 
 model Variant {
