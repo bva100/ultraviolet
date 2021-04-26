@@ -80,4 +80,34 @@ variantMediaRouter.get('/:id', async (req, res) => {
   }
 });
 
+variantMediaRouter.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const data = { ...req.body };
+  try {
+    const variantMedia = await prisma.variantMedia.update({
+      where: { id: Number(id) },
+      data,
+      include: {
+        VariantContent: {
+          include: {
+            Variant: {
+              include: {
+                Product: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    res.json(variantMedia);
+    eventTrigger('update-variant-media', variantMedia, data);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      meta: error.meta,
+      message: String(error.message),
+    });
+  }
+});
+
 export { variantMediaRouter };
