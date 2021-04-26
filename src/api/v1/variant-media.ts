@@ -60,4 +60,24 @@ variantMediaRouter.get('/', async (req, res) => {
   }
 });
 
+variantMediaRouter.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const variantMedia = await prisma.variantMedia.findUnique({
+      where: { id: Number(id) },
+    });
+    if (variantMedia === null) {
+      res.sendStatus(404);
+    } else {
+      res.json(variantMedia);
+    }
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      meta: error.meta,
+      message: String(error.message),
+    });
+  }
+});
+
 export { variantMediaRouter };
