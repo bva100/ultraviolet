@@ -6,6 +6,7 @@ import {
   productMetafieldsRouter,
   variantsRouter,
   variantContentRouter,
+  variantMediaRouter,
   variantMetafieldsRouter,
   webhookConfigRouter,
 } from './api/v1/index';
@@ -19,6 +20,7 @@ app.use('/api/v1/product-metafields', productMetafieldsRouter);
 app.use('/api/v1/product-media', productMediaRouter);
 app.use('/api/v1/variants', variantsRouter);
 app.use('/api/v1/variant-content', variantContentRouter);
+app.use('/api/v1/variant-media', variantMediaRouter);
 app.use('/api/v1/variant-metafields', variantMetafieldsRouter);
 app.use('/api/v1/webhook-configs', webhookConfigRouter);
 

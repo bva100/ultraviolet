@@ -3,6 +3,7 @@ export * from './product-media';
 export * from './product-metafields';
 export * from './products';
 export * from './variant-content';
+export * from './variant-media';
 export * from './variant-metafields';
 export * from './variants';
 export * from './webhook-configs';
