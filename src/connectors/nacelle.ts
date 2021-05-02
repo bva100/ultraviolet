@@ -1,10 +1,9 @@
-/* eslint-disable */
 import axios from 'axios';
 
 class NacelleConnector {
-  dataSourceId = 'Z2lkOi8vY3VzdG9tL2U0NmFlNmQzLTlhNzAtNDgzOS04ZTQ1LTQ2MTI0OWUwYzM1OS9kZWZhdWx0';
+  dataSourceId = process.env.NACELLE_DATA_SOURCE_ID || '';
 
-  endpoint = 'https://index.api.nacelle.com/graphql'
+  endpoint = 'https://index.api.nacelle.com/graphql';
 
   headers = {
     'Content-Type': 'application/json',
@@ -30,7 +29,7 @@ class NacelleConnector {
       variables: {
         input: {
           dataSourceId: this.dataSourceId,
-          products
+          products,
         },
       },
     };
