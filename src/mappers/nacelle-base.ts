@@ -5,7 +5,7 @@ export class NacelleBase {
     if (!params.id) {
       throw new Error('Nacelle mapper objects must have an ID passed in the parameter');
     } else {
-      this.id = params.id;
+      this.id = String(params.id);
     }
   }
 }
