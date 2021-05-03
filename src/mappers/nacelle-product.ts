@@ -24,7 +24,7 @@ export class NacelleProduct extends NacelleBase {
       this.handle = params.handle;
     }
 
-    if (!params.availableForSale) {
+    if (params.availableForSale == null) {
       throw new Error('Nacelle Product mapper must have the availableForSale parameter');
     } else {
       this.availableForSale = params.availableForSale;

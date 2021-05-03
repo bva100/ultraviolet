@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import {
   productsRouter,
@@ -11,6 +12,7 @@ import {
   webhookConfigRouter,
 } from './api/v1/index';
 
+dotenv.config();
 const app = express();
 
 app.use(express.json());
@@ -25,4 +27,4 @@ app.use('/api/v1/variant-metafields', variantMetafieldsRouter);
 app.use('/api/v1/webhook-configs', webhookConfigRouter);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log('REST API server ready at: http://localhost:3000'));
+app.listen(PORT, () => console.log(`REST API server ready at: http://localhost:${PORT}`));

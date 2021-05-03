@@ -24,7 +24,7 @@ test('Constructor throws if the availableForSale parameter does not exist', () =
 const params = {
   id: 'zyx123',
   handle: 'chair',
-  availableForSale: true,
+  availableForSale: false,
   productType: 'furniture',
   vendor: 'Knoll',
   tags: 'abc, 123, zyx',

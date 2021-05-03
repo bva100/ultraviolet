@@ -41,7 +41,11 @@ class NacelleConnector {
         console.error(err);
       })
       .then((res) => {
-        console.log(res);
+        if (products.length > 1) {
+          console.log('Product successfully sent to Nacelle\'s Data Ingestion engine');
+        } else {
+          console.log(`Product with id ${products[0].id} successfully sent to Nacelle\'s Data Ingestion engine`);
+        }
       });
   }
 }
