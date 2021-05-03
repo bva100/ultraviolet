@@ -4,7 +4,7 @@ const paramsNoId = {
   id: 'abc123',
 };
 
-test('Constuctor throws if no handle parameter exists', () => {
+test('Constructor throws if no handle parameter exists', () => {
   expect(() => {
     const nacelleProductNoHandle = new NacelleProduct(paramsNoId);
   }).toThrow('Nacelle Product mapper must have a handle param');
