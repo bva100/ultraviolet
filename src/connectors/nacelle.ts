@@ -12,7 +12,7 @@ class NacelleConnector {
     'client-name': 'Ultraviolet PIM',
   }
 
-  async indexProducts(products:any) {
+  async indexProducts(products: any) {
     const body = {
       query: `
       mutation Index($input: IndexProductsInput!) {
@@ -44,7 +44,44 @@ class NacelleConnector {
         if (products.length > 1) {
           console.log('Product successfully sent to Nacelle\'s Data Ingestion engine');
         } else {
-          console.log(`Product with id ${products[0].id} successfully sent to Nacelle\'s Data Ingestion engine`);
+          console.log(`Product with id ${products[0].id} successfully sent to Nacelle's Data Ingestion engine`);
+        }
+      });
+  }
+
+  async indexProductContent(productContent: any) {
+    const body = {
+      query: `
+      mutation Index($input: IndexProductContentInput!) {
+        indexProductContent(input: $input),
+        {
+          message,
+          spaceId,
+          userErrors {
+            fields
+            message
+          }
+        } 
+      }`,
+      variables: {
+        input: {
+          dataSourceId: this.dataSourceId,
+          productContent,
+        },
+      },
+    };
+
+    await axios.post(this.endpoint, body, {
+      headers: this.headers,
+    })
+      .catch((err) => {
+        console.error(err);
+      })
+      .then((res) => {
+        if (productContent.length > 1) {
+          console.log('Product Content successfully sent to Nacelle\'s Data Ingestion engine');
+        } else {
+          console.log(`Product Content with id ${productContent[0].id} successfully sent to Nacelle's Data Ingestion engine`);
         }
       });
   }

@@ -1,6 +1,7 @@
 import NacelleConnector from './connectors/nacelle';
 import { NacelleBase } from '../src/mappers/nacelle-base';
 import { NacelleProduct } from '../src/mappers/nacelle-product';
+import { NacelleProductContent } from '../src/mappers/nacelle-product-content';
 
 export class NacelleEmitter {
   topic: string;
@@ -23,6 +24,9 @@ export class NacelleEmitter {
     if (this.topic === 'create-product' || this.topic === 'update-product' || this.topic === 'delete-product') {
       this.mappedObject = new NacelleProduct(this.object);
     }
+    if (this.topic === 'create-product-content' || this.topic === 'update-product-content') {
+      this.mappedObject = new NacelleProductContent(this.object);
+    }
     return this;
   }
 
@@ -31,8 +35,11 @@ export class NacelleEmitter {
       console.log('Do not forget to connect your Nacelle space to this instance of Ultraviolet =)');
     }
     const nacelleConnector = new NacelleConnector();
-    if (this.topic === 'create-product' || this.topic === 'update-product' || this.topic === 'delete-product') {
+    if (this.topic === 'create-product' || this.topic === 'update-product') {
       return nacelleConnector.indexProducts([this.mappedObject]);
+    }
+    if (this.topic === 'create-product-content' || this.topic === 'update-product-content') {
+      return nacelleConnector.indexProductContent([this.mappedObject]);
     }
     return false;
   }
