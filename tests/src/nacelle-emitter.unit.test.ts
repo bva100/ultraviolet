@@ -1,6 +1,7 @@
 import { NacelleEmitter } from '../../src/nacelle-emitter';
 import { NacelleProduct } from '../../src/mappers/nacelle-product';
 import { NacelleProductContent } from '../../src/mappers/nacelle-product-content';
+import nacelleVariant, { NacelleVariant } from '../../src/mappers/nacelle-variant';
 
 const topic = 'create-product';
 const objectNoId = { foo: 'bar' };
@@ -52,10 +53,23 @@ test('loadMapper uses product content mapping for topics which are related to pr
   expect(nacelleProdContentEmitter.mappedObject).toEqual(new NacelleProductContent(productContentObject));
 });
 
-// const variantObject = {
+const variantObject = {
+  id: 123,
+  productId: 987,
+  availableForSale: false,
+  price: 20.12,
+  priceCurrency: 'usd',
+  compareAtPrice: 29.95,
+  quantityAvailable: 100,
+  sku: 'foobar',
+  weight: 1.98,
+  weightUnit: 'lbs',
+  createdAt: '2021-04-12T19:54:41.390Z',
+  updatedAt: '2021-04-12T19:58:24.840Z',
+};
 
-// };
+const nacelleVariantEmitter = new NacelleEmitter('create-variant', variantObject);
 
-// test('loadMapper uses variant mapping for topics which are related to variants ', () => {
-// expect();
-// });
+test('loadMapper uses variant mapping for topics which are related to variants ', () => {
+  expect(nacelleVariantEmitter.mappedObject).toEqual(new NacelleVariant(variantObject));
+});

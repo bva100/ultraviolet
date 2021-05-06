@@ -2,6 +2,7 @@ import { NacelleConnector } from './connectors/nacelle';
 import { NacelleBase } from '../src/mappers/nacelle-base';
 import { NacelleProduct } from '../src/mappers/nacelle-product';
 import { NacelleProductContent } from '../src/mappers/nacelle-product-content';
+import { NacelleVariant } from '../src/mappers/nacelle-variant';
 
 export class NacelleEmitter {
   topic: string;
@@ -26,6 +27,9 @@ export class NacelleEmitter {
     }
     if (this.topic === 'create-product-content' || this.topic === 'update-product-content') {
       this.mappedObject = new NacelleProductContent(this.object);
+    }
+    if (this.topic === 'create-variant' || this.topic === 'update-variant') {
+      this.mappedObject = new NacelleVariant(this.object);
     }
     return this;
   }
