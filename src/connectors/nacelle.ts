@@ -41,6 +41,7 @@ class NacelleConnector {
         console.error(err);
       })
       .then((res) => {
+        console.dir(res, { depth: null });
         if (products.length > 1) {
           console.log('Product successfully sent to Nacelle\'s Data Ingestion engine');
         } else {
