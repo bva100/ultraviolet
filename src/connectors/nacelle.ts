@@ -23,7 +23,7 @@ const responseHandler = (res: any, objects: NacelleBase[], objectName: string): 
 class NacelleConnector {
   dataSourceId = process.env.NACELLE_DATA_SOURCE_ID || '';
 
-  endpoint = 'https://index.api.nacelle.com/graphql';
+  endpoint = process.env.NACELLE_DATA_INGESTION_ENDPOINT || '';
 
   headers = {
     'Content-Type': 'application/json',
