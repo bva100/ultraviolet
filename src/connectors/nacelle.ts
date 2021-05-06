@@ -61,7 +61,7 @@ class NacelleConnector {
         console.error(err);
       })
       .then((res) => {
-        responseHandler(res, products, 'product');
+        responseHandler(res, products, 'Product');
       });
   }
 
@@ -94,11 +94,7 @@ class NacelleConnector {
         console.error(err);
       })
       .then((res) => {
-        if (productContent.length > 1) {
-          console.log('Product Content successfully sent to Nacelle\'s Data Ingestion engine');
-        } else {
-          console.log(`Product Content with id ${productContent[0].id} successfully sent to Nacelle's Data Ingestion engine`);
-        }
+        responseHandler(res, productContent, 'Product Content');
       });
   }
 }
