@@ -1,4 +1,4 @@
-import NacelleConnector from './connectors/nacelle';
+import { NacelleConnector } from './connectors/nacelle';
 import { NacelleBase } from '../src/mappers/nacelle-base';
 import { NacelleProduct } from '../src/mappers/nacelle-product';
 import { NacelleProductContent } from '../src/mappers/nacelle-product-content';

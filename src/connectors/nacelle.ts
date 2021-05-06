@@ -1,5 +1,25 @@
 import axios from 'axios';
+import { NacelleBase } from '../mappers/nacelle-base';
 
+const responseHandler = (res: any, objects: NacelleBase[], objectName: string): boolean => {
+  if (res.data) {
+    if (res.data.errors) {
+      if (process.env.NACELLE_CONNECTOR_VERBOSE) {
+        console.error('Failed to send data for Nacelle. Check logs for more details.');
+        console.dir(res.data.errors, { depth: null });
+      }
+      return false;
+    }
+    if (objects.length > 1 && process.env.NACELLE_CONNECTOR_VERBOSE) {
+      console.log(`${objectName}s successfully sent to Nacelle's Data Ingestion engine`);
+    } else if (objects.length <= 1 && process.env.NACELLE_CONNECTOR_VERBOSE) {
+      console.log(`${objectName} with id ${objects[0].id} successfully sent to Nacelle's Data Ingestion engine`);
+    }
+    return true;
+  }
+  console.error('Failed to send to Nacelle. Please check environment variables for your Nacelle connection.');
+  return false;
+};
 class NacelleConnector {
   dataSourceId = process.env.NACELLE_DATA_SOURCE_ID || '';
 
@@ -12,7 +32,7 @@ class NacelleConnector {
     'client-name': 'Ultraviolet PIM',
   }
 
-  async indexProducts(products: any) {
+  async indexProducts(products: NacelleBase[]) {
     const body = {
       query: `
       mutation Index($input: IndexProductsInput!) {
@@ -41,16 +61,11 @@ class NacelleConnector {
         console.error(err);
       })
       .then((res) => {
-        console.dir(res, { depth: null });
-        if (products.length > 1) {
-          console.log('Product successfully sent to Nacelle\'s Data Ingestion engine');
-        } else {
-          console.log(`Product with id ${products[0].id} successfully sent to Nacelle's Data Ingestion engine`);
-        }
+        responseHandler(res, products, 'product');
       });
   }
 
-  async indexProductContent(productContent: any) {
+  async indexProductContent(productContent: NacelleBase[]) {
     const body = {
       query: `
       mutation Index($input: IndexProductContentInput!) {
@@ -88,4 +103,4 @@ class NacelleConnector {
   }
 }
 
-export default NacelleConnector;
+export { NacelleConnector, responseHandler };
