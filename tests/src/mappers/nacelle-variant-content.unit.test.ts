@@ -11,6 +11,7 @@ const params = {
   id: 123,
   variantId: 26,
   locale: 'en_US',
+  title: 'Copper Coffee Pot',
 };
 const nacelleVariantContent = new NacelleVariantContent(params);
 
@@ -28,4 +29,8 @@ test('Constructor throws error when no variant locale is passed', () => {
   expect(() => {
     const noLocale = new NacelleVariantContent(paramsNoLocale);
   }).toThrow('Nacelle Variant Content parameters must include a locale');
+});
+
+test('Constructor sets title', () => {
+  expect(nacelleVariantContent.title).toBe(params.title);
 });

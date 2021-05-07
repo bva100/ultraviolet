@@ -5,6 +5,8 @@ export class NacelleVariantContent extends NacelleBase {
 
   locale: string;
 
+  title: string;
+
   constructor(params: any) {
     super(params);
 
@@ -19,6 +21,8 @@ export class NacelleVariantContent extends NacelleBase {
     } else {
       this.locale = params.locale;
     }
+
+    if(params.title)
   }
 }
 
