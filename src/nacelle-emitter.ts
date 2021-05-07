@@ -36,6 +36,7 @@ export class NacelleEmitter {
 
   async send(): Promise<any> {
     if (!process.env.NACELLE_SPACE_ID && !process.env.NACELLE_SPACE_TOKEN) {
+      // eslint-disable-next-line no-console
       console.log('Do not forget to connect your Nacelle space to this instance of Ultraviolet =)');
     }
     const nacelleConnector = new NacelleConnector();
@@ -44,6 +45,9 @@ export class NacelleEmitter {
     }
     if (this.topic === 'create-product-content' || this.topic === 'update-product-content') {
       return nacelleConnector.indexProductContent([this.mappedObject]);
+    }
+    if (this.topic === 'create-variant' || this.topic === 'update-variant') {
+      return nacelleConnector.indexVariants([this.mappedObject]);
     }
     return false;
   }

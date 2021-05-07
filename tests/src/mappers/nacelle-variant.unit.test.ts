@@ -50,7 +50,7 @@ test('Constructor throws if no price exists', () => {
 });
 
 test('Constructor sets price ', () => {
-  expect(nacelleVariant.price).toBe(params.price);
+  expect(nacelleVariant.price).toBe(String(params.price));
 });
 
 test('Constructor throw is no priceCurrency exsits', () => {
@@ -64,7 +64,7 @@ test('Constructor sets priceCurrency', () => {
 });
 
 test('Constructor sets compareAtPrice', () => {
-  expect(nacelleVariant.compareAtPrice).toBe(params.compareAtPrice);
+  expect(nacelleVariant.compareAtPrice).toBe(String(params.compareAtPrice));
 });
 
 test('Constructor sets quantityAvailable', () => {

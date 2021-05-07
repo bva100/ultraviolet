@@ -5,11 +5,11 @@ export class NacelleVariant extends NacelleBase {
 
   availableForSale: boolean;
 
-  price: number;
+  price: string;
 
   priceCurrency: string;
 
-  compareAtPrice: number | null;
+  compareAtPrice: string | null;
 
   quantityAvailable: number | null;
 
@@ -41,7 +41,7 @@ export class NacelleVariant extends NacelleBase {
     if (!params.price) {
       throw new Error('Nacelle Variant parameters must include a price');
     } else {
-      this.price = params.price;
+      this.price = String(params.price);
     }
 
     if (!params.priceCurrency) {
@@ -51,7 +51,7 @@ export class NacelleVariant extends NacelleBase {
     }
 
     if (params.compareAtPrice) {
-      this.compareAtPrice = params.compareAtPrice;
+      this.compareAtPrice = String(params.compareAtPrice);
     } else {
       this.compareAtPrice = null;
     }
@@ -69,7 +69,7 @@ export class NacelleVariant extends NacelleBase {
     }
 
     if (params.weight) {
-      this.weight = params.weight;
+      this.weight = Number(params.weight);
     } else {
       this.weight = null;
     }
