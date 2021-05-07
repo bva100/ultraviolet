@@ -5,7 +5,19 @@ export class NacelleVariantContent extends NacelleBase {
 
   locale: string;
 
-  title: string;
+  title: string | null;
+
+  description: string | null;
+
+  swatchSrc: string | null;
+
+  fields: any;
+
+  published: boolean;
+
+  createdAt: number | null;
+
+  updatedAt: number | null;
 
   constructor(params: any) {
     super(params);
@@ -22,7 +34,47 @@ export class NacelleVariantContent extends NacelleBase {
       this.locale = params.locale;
     }
 
-    if(params.title)
+    if (params.title) {
+      this.title = params.title;
+    } else {
+      this.title = null;
+    }
+
+    if (params.description) {
+      this.description = params.description;
+    } else {
+      this.description = null;
+    }
+
+    if (params.swatchSrc) {
+      this.swatchSrc = params.swatchSrc;
+    } else {
+      this.swatchSrc = null;
+    }
+
+    if (params.fields) {
+      this.fields = params.fields;
+    } else {
+      this.fields = null;
+    }
+
+    if (params.published === null) {
+      this.published = false;
+    } else {
+      this.published = params.published;
+    }
+
+    if (params.createdAt) {
+      this.createdAt = Math.round(new Date(params.createdAt).getTime() / 1000);
+    } else {
+      this.createdAt = null;
+    }
+
+    if (params.updatedAt) {
+      this.updatedAt = Math.round(new Date(params.updatedAt).getTime() / 1000);
+    } else {
+      this.updatedAt = null;
+    }
   }
 }
 

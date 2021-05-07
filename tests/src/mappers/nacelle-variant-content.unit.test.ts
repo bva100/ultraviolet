@@ -12,6 +12,12 @@ const params = {
   variantId: 26,
   locale: 'en_US',
   title: 'Copper Coffee Pot',
+  description: 'Make a perfect cup of coffee in a perfect copper coffee pot',
+  swatchSrc: 'nacelle.com/swatches/ultraviolet/',
+  fields: { foo: 'bar' },
+  published: false,
+  createdAt: '2021-04-12T19:54:41.390Z',
+  updatedAt: '2021-04-12T19:58:24.840Z',
 };
 const nacelleVariantContent = new NacelleVariantContent(params);
 
@@ -33,4 +39,28 @@ test('Constructor throws error when no variant locale is passed', () => {
 
 test('Constructor sets title', () => {
   expect(nacelleVariantContent.title).toBe(params.title);
+});
+
+test('Constructor sets description', () => {
+  expect(nacelleVariantContent.description).toBe(params.description);
+});
+
+test('Constructor sets swatchSrc', () => {
+  expect(nacelleVariantContent.description).toBe(params.description);
+});
+
+test('Constructor sets fields', () => {
+  expect(nacelleVariantContent.fields).toBe(params.fields);
+});
+
+test('Constructor sets published', () => {
+  expect(nacelleVariantContent.published).toBe(params.published);
+});
+
+test('Constructor sets and formats createdAt', () => {
+  expect(nacelleVariantContent.createdAt).toEqual(1618257281);
+});
+
+test('Constructor sets and formats updatedAt', () => {
+  expect(nacelleVariantContent.updatedAt).toEqual(1618257505);
 });
