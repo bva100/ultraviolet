@@ -3,13 +3,19 @@ import { NacelleVariantContent } from '../../../src/mappers/nacelle-variant-cont
 const paramsNoVariantId = {
   id: 123,
 };
+const paramsNoProductId = {
+  id: 123,
+  variantId: 987,
+};
 const paramsNoLocale = {
   id: 123,
   variantId: 987,
+  productId: 654,
 };
 const params = {
   id: 123,
   variantId: 26,
+  productId: 695,
   locale: 'en_US',
   title: 'Copper Coffee Pot',
   description: 'Make a perfect cup of coffee in a perfect copper coffee pot',
@@ -29,6 +35,12 @@ test('Constructor throws error when no variant id is passed', () => {
 
 test('Constructor sets variantId and casts to string', () => {
   expect(nacelleVariantContent.variantId).toBe(String(params.variantId));
+});
+
+test('Constructor throw error when no productId is passed', () => {
+  expect(() => {
+    const noProductId = new NacelleVariantContent(paramsNoProductId);
+  }).toThrow('Nacelle Variant Content parameters must include a productId');
 });
 
 test('Constructor throws error when no variant locale is passed', () => {

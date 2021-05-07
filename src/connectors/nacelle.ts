@@ -130,6 +130,39 @@ class NacelleConnector {
         responseHandler(res, variants, 'Variant');
       });
   }
+
+  async indexVariantContent(variantContent: NacelleBase[]) {
+    const body = {
+      query: `
+      mutation Index($input: IndexVariantContentInput!) {
+        indexVariantContent(input: $input),
+        {
+          message,
+          spaceId,
+          userErrors {
+            fields
+            message
+          }
+        } 
+      }`,
+      variables: {
+        input: {
+          dataSourceId: this.dataSourceId,
+          variantContent,
+        },
+      },
+    };
+
+    await axios.post(this.endpoint, body, {
+      headers: this.headers,
+    })
+      .catch((err) => {
+        console.error(err);
+      })
+      .then((res) => {
+        responseHandler(res, variantContent, 'Variant Content');
+      });
+  }
 }
 
 export { NacelleConnector, responseHandler };

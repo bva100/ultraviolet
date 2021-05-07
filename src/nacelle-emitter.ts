@@ -53,6 +53,9 @@ export class NacelleEmitter {
     if (this.topic === 'create-variant' || this.topic === 'update-variant') {
       return nacelleConnector.indexVariants([this.mappedObject]);
     }
+    if (this.topic === 'create-variant-content' || this.topic === 'update-variant-content') {
+      return nacelleConnector.indexVariantContent([this.mappedObject]);
+    }
     return false;
   }
 }

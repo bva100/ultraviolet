@@ -3,6 +3,8 @@ import { NacelleBase } from './nacelle-base';
 export class NacelleVariantContent extends NacelleBase {
   variantId: string;
 
+  productId: string;
+
   locale: string;
 
   title: string | null;
@@ -26,6 +28,17 @@ export class NacelleVariantContent extends NacelleBase {
       throw new Error('Nacelle Variant Content parameters must include a parent variantId');
     } else {
       this.variantId = String(params.variantId);
+    }
+
+    if (!params.productId) {
+      // see if payload includes Variant object. If it does, pull the parent productId
+      if (params.Variant && params.Variant.productId) {
+        this.productId = String(params.Variant.productId);
+      } else {
+        throw new Error('Nacelle Variant Content parameters must include a productId');
+      }
+    } else {
+      this.productId = String(params.productId);
     }
 
     if (!params.locale) {
