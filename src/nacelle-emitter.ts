@@ -3,6 +3,7 @@ import { NacelleBase } from '../src/mappers/nacelle-base';
 import { NacelleProduct } from '../src/mappers/nacelle-product';
 import { NacelleProductContent } from '../src/mappers/nacelle-product-content';
 import { NacelleVariant } from '../src/mappers/nacelle-variant';
+import { NacelleVariantContent } from '../src/mappers/nacelle-variant-content';
 
 export class NacelleEmitter {
   topic: string;
@@ -30,6 +31,9 @@ export class NacelleEmitter {
     }
     if (this.topic === 'create-variant' || this.topic === 'update-variant') {
       this.mappedObject = new NacelleVariant(this.object);
+    }
+    if (this.topic === 'create-variant-content' || this.topic === 'update-variant-content') {
+      this.mappedObject = new NacelleVariantContent(this.object);
     }
     return this;
   }

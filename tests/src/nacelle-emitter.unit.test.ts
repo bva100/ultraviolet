@@ -1,7 +1,8 @@
 import { NacelleEmitter } from '../../src/nacelle-emitter';
 import { NacelleProduct } from '../../src/mappers/nacelle-product';
 import { NacelleProductContent } from '../../src/mappers/nacelle-product-content';
-import nacelleVariant, { NacelleVariant } from '../../src/mappers/nacelle-variant';
+import { NacelleVariant } from '../../src/mappers/nacelle-variant';
+import { NacelleVariantContent } from '../../src/mappers/nacelle-variant-content';
 
 const topic = 'create-product';
 const objectNoId = { foo: 'bar' };
@@ -72,4 +73,18 @@ const nacelleVariantEmitter = new NacelleEmitter('create-variant', variantObject
 
 test('loadMapper uses variant mapping for topics which are related to variants ', () => {
   expect(nacelleVariantEmitter.mappedObject).toEqual(new NacelleVariant(variantObject));
+});
+
+const variantContentObject = {
+  id: '31',
+  variantId: '116',
+  productId: '654',
+  locale: 'en_US',
+  createdAt: 1620393724,
+  updatedAt: 1620393724,
+};
+const nacelleVariantContentEmitter = new NacelleEmitter('update-variant-content', variantContentObject);
+test('loadMapper uses variant content mapping for topics which are related to variant contents', () => {
+  // eslint-disable-next-line max-len
+  expect(nacelleVariantContentEmitter.mappedObject).toEqual(new NacelleVariantContent(variantContentObject));
 });
