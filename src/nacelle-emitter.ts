@@ -23,26 +23,35 @@ export class NacelleEmitter {
   }
 
   loadMapper(): this {
-    if (this.topic === 'create-product' || this.topic === 'update-product' || this.topic === 'delete-product') {
-      this.mappedObject = new NacelleProduct(this.object);
-    }
-    if (this.topic === 'create-product-content' || this.topic === 'update-product-content') {
-      this.mappedObject = new NacelleProductContent(this.object);
-    }
-    if (this.topic === 'create-variant' || this.topic === 'update-variant') {
-      this.mappedObject = new NacelleVariant(this.object);
-    }
-    if (this.topic === 'create-variant-content' || this.topic === 'update-variant-content') {
-      this.mappedObject = new NacelleVariantContent(this.object);
+    switch (this.topic) {
+      case 'create-product':
+      case 'update-product':
+        this.mappedObject = new NacelleProduct(this.object);
+        break;
+
+      case 'create-product-content':
+      case 'update-product-content':
+        this.mappedObject = new NacelleProductContent(this.object);
+        break;
+
+      case 'create-variant':
+      case 'update-variant':
+        this.mappedObject = new NacelleVariant(this.object);
+        break;
+
+      case 'create-variant-content':
+      case 'update-variant-content':
+        this.mappedObject = new NacelleVariantContent(this.object);
+        break;
+
+      default:
+        this.mappedObject = new NacelleBase(this.object);
+        break;
     }
     return this;
   }
 
   async send(): Promise<any> {
-    if (!process.env.NACELLE_SPACE_ID && !process.env.NACELLE_SPACE_TOKEN) {
-      // eslint-disable-next-line no-console
-      console.log('Do not forget to connect your Nacelle space to this instance of Ultraviolet =)');
-    }
     const nacelleConnector = new NacelleConnector();
     if (this.topic === 'create-product' || this.topic === 'update-product') {
       return nacelleConnector.indexProducts([this.mappedObject]);

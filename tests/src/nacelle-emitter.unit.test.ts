@@ -51,6 +51,7 @@ const productContentObject = {
 const nacelleProdContentEmitter = new NacelleEmitter('update-product-content', productContentObject);
 
 test('loadMapper uses product content mapping for topics which are related to product content ', () => {
+  // eslint-disable-next-line max-len
   expect(nacelleProdContentEmitter.mappedObject).toEqual(new NacelleProductContent(productContentObject));
 });
 
