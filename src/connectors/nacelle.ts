@@ -2,7 +2,7 @@ import axios from 'axios';
 import { NacelleBase } from '../mappers/nacelle-base';
 
 const responseHandler = (res: any, objects: NacelleBase[], objectName: string): boolean => {
-  if (res.data) {
+  if (res && res.data) {
     if (res.data.errors) {
       if (process.env.NACELLE_CONNECTOR_VERBOSE) {
         console.error('Failed to send data for Nacelle. Check logs for more details.');
