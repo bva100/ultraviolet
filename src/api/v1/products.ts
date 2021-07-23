@@ -172,4 +172,26 @@ productsRouter.delete('/handle/:handle', async (req, res) => {
   }
 });
 
+productsRouter.post('/reindex', async (req, res) => {
+  try {
+    const products = await prisma.product.findMany({
+      include: {
+        content: true,
+        variants: true,
+        metafields: true,
+      },
+    });
+    products.forEach((product) => {
+      eventTrigger('update-product', product, {});
+    });
+    res.json(products);
+  } catch (error) {
+    res.json({
+      code: String(error.code),
+      meta: error.meta,
+      message: String(error.message),
+    });
+  }
+});
+
 export { productsRouter };
